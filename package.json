@@ -3,7 +3,9 @@
   "scripts": {
     "dev": "nodemon",
     "build": "tsc -p backend/tsconfig.json",
-    "start": "node backend/dist/src/core/index.js"
+    "start": "node backend/dist/src/core/index.js",
+    "test:ci": "npm run build:all",
+    "audit:all": "npm audit && cd frontend && pnpm audit"
   },
   "version": "0.1.0",
   "license": "LICENSE.md",

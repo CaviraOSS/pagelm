@@ -1,0 +1,107 @@
+name: Security & Dependency Updates
+
+on:
+  schedule:
+    # Run every Monday at 9 AM UTC
+    - cron: '0 9 * * 1'
+  workflow_dispatch: # Allow manual triggering
+
+jobs:
+  security-audit:
+    name: Security Audit
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+    
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20.x'
+    
+    - name: Setup pnpm
+      uses: pnpm/action-setup@v4
+      with:
+        version: 8
+    
+    - name: Install backend dependencies
+      run: npm install
+    
+    - name: Install frontend dependencies
+      run: pnpm install
+      working-directory: ./frontend
+    
+    - name: Run backend security audit
+      run: |
+        echo "## Backend Security Audit" >> $GITHUB_STEP_SUMMARY
+        npm audit --audit-level=moderate --json | jq -r '.vulnerabilities | to_entries[] | "- \(.key): \(.value.severity)"' >> $GITHUB_STEP_SUMMARY || true
+    
+    - name: Run frontend security audit
+      run: |
+        echo "## Frontend Security Audit" >> $GITHUB_STEP_SUMMARY
+        cd frontend && pnpm audit --audit-level=moderate --json | jq -r '.advisories | to_entries[] | "- \(.key): \(.value.severity)"' >> $GITHUB_STEP_SUMMARY || true
+    
+    - name: Create issue for high/critical vulnerabilities
+      if: failure()
+      uses: actions/github-script@v7
+      with:
+        script: |
+          const title = `🚨 Security vulnerabilities detected - ${new Date().toISOString().split('T')[0]}`;
+          const body = `
+          Automated security scan detected vulnerabilities that need attention.
+          
+          Please review the security audit results and update dependencies accordingly.
+          
+          **Actions to take:**
+          1. Run \`npm audit\` in the root directory for backend issues
+          2. Run \`pnpm audit\` in the frontend directory for frontend issues
+          3. Update vulnerable packages using \`npm audit fix\` or \`pnpm update\`
+          4. Test the application after updates
+          
+          This issue was automatically created by the security audit workflow.
+          `;
+          
+          github.rest.issues.create({
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            title: title,
+            body: body,
+            labels: ['security', 'dependencies', 'automated']
+          });
+
+  dependency-updates:
+    name: Check for Dependency Updates
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+    
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20.x'
+    
+    - name: Setup pnpm
+      uses: pnpm/action-setup@v4
+      with:
+        version: 8
+    
+    - name: Check for backend updates
+      run: |
+        npm outdated --json > backend_outdated.json || true
+        if [ -s backend_outdated.json ]; then
+          echo "## Backend Dependencies with Updates Available" >> $GITHUB_STEP_SUMMARY
+          cat backend_outdated.json | jq -r 'to_entries[] | "- \(.key): \(.value.current) → \(.value.latest)"' >> $GITHUB_STEP_SUMMARY
+        fi
+    
+    - name: Check for frontend updates
+      run: |
+        cd frontend
+        pnpm outdated --json > ../frontend_outdated.json || true
+        cd ..
+        if [ -s frontend_outdated.json ]; then
+          echo "## Frontend Dependencies with Updates Available" >> $GITHUB_STEP_SUMMARY
+          cat frontend_outdated.json | jq -r 'to_entries[] | "- \(.key): \(.value.current) → \(.value.latest)"' >> $GITHUB_STEP_SUMMARY
+        fi
