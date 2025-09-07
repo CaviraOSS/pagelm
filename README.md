@@ -1,8 +1,7 @@
-# NeuroPilot
-
 <div align="center">
-
 <img width="full" height="auto" alt="neuropilot" src="https://github.com/user-attachments/assets/5f187cd5-078a-4a87-85ba-da218e81e252" />
+
+# NeuroPilot
 
 **An open-source AI-powered education platform that transforms study materials into interactive learning resources**
 
