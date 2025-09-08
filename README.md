@@ -143,6 +143,11 @@ See `.env.example` for all options.
 
 ---
 
+## 👥 Community
+Join our [Discord](https://discord.gg/76QMKwj2J4) community to connect, share ideas, and take part in exciting discussions!
+
+---
+
 ## 🤝 Contributing
 
 We welcome all contributions.
