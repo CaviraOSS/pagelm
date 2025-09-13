@@ -1,18 +1,10 @@
 {
-  "name": "neuropilot",
   "scripts": {
     "dev": "nodemon",
     "build": "tsc -p backend/tsconfig.json",
-    "start": "node backend/dist/src/core/index.js",
-    "test:ci": "npm run build:all",
-    "audit:all": "npm audit && cd frontend && pnpm audit"
+    "start": "node backend/dist/src/core/index.js"
   },
-  "version": "0.1.0",
-  "license": "LICENSE.md",
-  "authors": [
-    "CaviraOSS",
-    "nullure"
-  ],
+  "author": "nullure, CaviraOSS",
   "dependencies": {
     "@google-cloud/text-to-speech": "^6.3.0",
     "@keyv/sqlite": "^4.0.5",
@@ -20,11 +12,13 @@
     "@langchain/community": "^0.3.49",
     "@langchain/core": "^0.3.66",
     "@langchain/google-genai": "^0.2.16",
+    "@langchain/langgraph": "^0.4.9",
     "@langchain/ollama": "^0.2.3",
     "@langchain/openai": "^0.6.3",
     "@pdf-lib/fontkit": "^1.1.1",
     "busboy": "^1.6.0",
     "cors": "^2.8.5",
+    "docxtemplater": "^3.65.3",
     "dotenv": "^16.4.5",
     "edge-tts": "^1.0.1",
     "keyv": "^5.5.0",
@@ -34,6 +28,7 @@
     "path": "^0.12.7",
     "pdf-lib": "^1.17.1",
     "pdf-parse": "^1.1.1",
+    "pizzip": "^3.2.0",
     "ws": "^8.18.3",
     "youtube-transcript": "^1.2.1"
   },
