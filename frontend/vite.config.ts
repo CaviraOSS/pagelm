@@ -14,5 +14,6 @@ export default defineConfig(({ mode }) => {
       host: env.VITE_FRONTEND_HOST || "localhost",
       port: Number(env.VITE_FRONTEND_PORT) || 4173,
     },
+    envDir: path.resolve(__dirname, ".."),
   };
 });
