@@ -19,7 +19,6 @@
 
 ---
 
-
 ## Demo
 
 <img src=".github/neuropilot.png" alt="NeuroPilot Demo"/>
@@ -68,15 +67,15 @@ The platform provides a modern interface for students, educators, and researcher
 
 ## 🛠️ Technology Stack
 
-| Component      | Technology                         |
-| -------------- | ---------------------------------- |
-| **Backend**    | Node.js, TypeScript, LangChain     |
-| **Frontend**   | Vite, React, TailwindCSS           |
-| **Database**   | JSON (default), optional vector DB |
-| **AI/ML**      | Multiple LLM providers, embeddings |
-| **Audio**      | Edge TTS, ElevenLabs, Google TTS   |
-| **Deployment** | Docker, Docker Compose             |
-| **Docs**       | pdf-lib, mammoth, pdf-parse        |
+| Component      | Technology                               |
+| -------------- | ---------------------------------------- |
+| **Backend**    | Node.js, TypeScript, LangChain, Langraph |
+| **Frontend**   | Vite, React, TailwindCSS                 |
+| **Database**   | JSON (default), optional vector DB       |
+| **AI/ML**      | Multiple LLM providers, embeddings       |
+| **Audio**      | Edge TTS, ElevenLabs, Google TTS         |
+| **Deployment** | Docker, Docker Compose                   |
+| **Docs**       | pdf-lib, mammoth, pdf-parse              |
 
 ---
 
@@ -144,6 +143,7 @@ See `.env.example` for all options.
 ---
 
 ## 👥 Community
+
 Join our [Discord](https://discord.gg/76QMKwj2J4) community to connect, share ideas, and take part in exciting discussions!
 
 ---
@@ -195,7 +195,7 @@ Your support helps fund ongoing development and hosting.
 
 Licensed under the **CaviraOSS Community License**.  
 Free to use, share, and modify for personal and educational purposes.  
-Commercial use or resale requires prior written permission from CaviraOSS.  
+Commercial use or resale requires prior written permission from CaviraOSS.
 
 See [LICENSE](LICENSE.md) for full terms.
 
