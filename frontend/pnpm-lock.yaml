@@ -49,7 +49,7 @@ importers:
         specifier: ^19.1.8
         version: 19.1.12
       '@types/react-dom':
-        specifier: ^19.1.6
+        specifier: ^19.1.9
         version: 19.1.9(@types/react@19.1.12)
       '@vitejs/plugin-react':
         specifier: ^4.6.0
