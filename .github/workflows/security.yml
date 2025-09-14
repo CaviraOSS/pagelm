@@ -1,5 +1,8 @@
 name: Security & Dependency Updates
 
+permissions:
+  contents: read
+
 on:
   schedule:
     # Run every Monday at 9 AM UTC
@@ -10,6 +13,9 @@ jobs:
   security-audit:
     name: Security Audit
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      issues: write
     
     steps:
     - name: Checkout code
