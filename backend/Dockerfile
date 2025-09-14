@@ -1,11 +1,11 @@
-FROM node:20-alpine AS builder
+FROM node:24-alpine AS builder
 WORKDIR /app
 COPY package*.json ./
 RUN npm install --production=false
 COPY backend/ ./backend/
 RUN npm run build
 
-FROM node:20-alpine AS runtime
+FROM node:24-alpine AS runtime
 WORKDIR /app
 COPY --from=builder /app/backend/dist ./dist
 COPY --from=builder /app/package.json ./
