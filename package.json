@@ -22,7 +22,7 @@
     "dotenv": "^16.4.5",
     "edge-tts": "^1.0.1",
     "keyv": "^5.5.0",
-    "langchain": "^0.3.30",
+    "langchain": "^0.3.33",
     "mammoth": "^1.10.0",
     "marked": "^16.1.1",
     "path": "^0.12.7",
