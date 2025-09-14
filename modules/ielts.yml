@@ -1,0 +1,46 @@
+id: "ielts-academic"
+name: "IELTS Academic Simulation"
+scoring: "right-only"
+sections:
+  - id: "listening"
+    title: "Listening"
+    durationSec: 1800
+    gen:
+      type: "short"
+      count: 10
+      difficulty: "medium"
+      style: "note completion, short dialogue"
+      topic: "campus and general topics"
+      prompt: |
+        Generate short-answer prompts that would be answered by one to three words. Provide acceptable variants in answer array.
+      match: "keywords"
+      points: 1
+  - id: "reading"
+    title: "Reading"
+    durationSec: 3600
+    gen:
+      type: "mcq"
+      count: 10
+      difficulty: "medium"
+      style: "academic passages, inference"
+      topic: "general academic texts"
+      prompt: |
+        Generate IELTS-style reading MCQs testing main idea, detail, and inference. Ensure one correct answer and plausible distractors.
+  - id: "writing"
+    title: "Writing Task"
+    durationSec: 3600
+    gen:
+      type: "writing"
+      tasks:
+        - id: "task2"
+          rubricId: "wt2"
+          prompt: "Task 2: Discuss both views and give your own opinion."
+          maxPoints: 24
+rubrics:
+  wt2:
+    id: "wt2"
+    criteria:
+      - { id: "task", label: "Task Response", max: 6 }
+      - { id: "coherence", label: "Coherence & Cohesion", max: 6 }
+      - { id: "lexical", label: "Lexical Resource", max: 6 }
+      - { id: "grammar", label: "Grammatical Range & Accuracy", max: 6 }

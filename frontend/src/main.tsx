@@ -6,6 +6,7 @@ import Chat from "./pages/Chat";
 import Quiz from "./pages/Quiz";
 import Tools from "./pages/Tools"
 import FlashCards from './pages/FlashCards'
+import ExamLabs from "./pages/examlab.tsx";
 import NotFound from './pages/404.tsx'
 import "./index.css"
 
@@ -19,6 +20,7 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
         <Route path="quiz" element={<Quiz />} />
         <Route path="tools" element={<Tools />} />
         <Route path="cards" element={<FlashCards />} />
+        <Route path="exam" element={<ExamLabs />} />
       </Route>
     </Routes>
   </BrowserRouter>

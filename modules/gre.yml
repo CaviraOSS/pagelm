@@ -1,0 +1,44 @@
+id: "gre-general"
+name: "GRE General Simulation"
+scoring: "right-only"
+sections:
+  - id: "verbal"
+    title: "Verbal Reasoning"
+    durationSec: 1800
+    gen:
+      type: "mcq"
+      count: 15
+      difficulty: "medium"
+      style: "text completion, sentence equivalence, reading"
+      topic: "general academic English"
+      prompt: |
+        Generate GRE-style verbal MCQs focusing on nuanced vocabulary and inference. Ensure exactly one best answer; distractors must be defensible but inferior.
+  - id: "quant"
+    title: "Quantitative Reasoning"
+    durationSec: 2100
+    gen:
+      type: "mcq"
+      count: 15
+      difficulty: "medium"
+      style: "arithmetic, algebra, data analysis, geometry"
+      topic: "standard GRE quant"
+      prompt: |
+        Generate GRE quant MCQs solvable in under 2 minutes each. Include data interpretation and algebraic manipulations. Provide only one correct answer.
+  - id: "writing"
+    title: "Analytical Writing"
+    durationSec: 3600
+    gen:
+      type: "writing"
+      tasks:
+        - id: "issue"
+          rubricId: "aw"
+          prompt: "Analyze an issue: discuss the extent to which you agree or disagree with a claim."
+          maxPoints: 12
+rubrics:
+  aw:
+    id: "aw"
+    criteria:
+      - { id: "insight", label: "Insight & Position", max: 4 }
+      - { id: "support", label: "Support & Evidence", max: 4 }
+      - { id: "cohesion", label: "Organization & Coherence", max: 2 }
+      - { id: "language", label: "Control of Language", max: 2 }

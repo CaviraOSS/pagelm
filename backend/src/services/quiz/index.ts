@@ -2,7 +2,7 @@ import fs from "fs";
 import path from "path";
 import crypto from "crypto";
 import { StateGraph, Annotation } from "@langchain/langgraph";
-import llm from "../utils/llm/llm";
+import llm from "../../utils/llm/llm";
 
 export type QuizItem = {
   id: number;

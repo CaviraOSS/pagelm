@@ -9,7 +9,7 @@ import ResultsPanel from "../components/Quiz/ResultsPanel";
 import ReviewModal from "../components/Quiz/ReviewModal";
 
 export type Question = { id: number; question: string; options: string[]; correct: number; hint: string; explanation: string; imageHtml?: string };
-export type UA = { questionId: number; selectedAnswer: number; correct: boolean; question: string; selectedOption: string; correctOption: string };
+export type UA = { questionId: number; selectedAnswer: number; correct: boolean; question: string; selectedOption: string; correctOption: string; explanation: string };
 
 function takeQuizArray(a: unknown): Question[] {
   if (Array.isArray(a)) return a as Question[];
@@ -109,6 +109,7 @@ export default function Quiz() {
       question: q.question,
       selectedOption: q.options[selected],
       correctOption: q.options[q.correct],
+      explanation: q.explanation,
     };
     setAnswers(a => [...a, ua]);
     setShowExp(true);

@@ -1,0 +1,37 @@
+id: "jee-main"
+name: "JEE Main Simulation"
+scoring: "right-only"
+sections:
+  - id: "physics"
+    title: "Physics"
+    durationSec: 3600
+    gen:
+      type: "mcq"
+      count: 25
+      difficulty: "hard"
+      style: "IIT-JEE conceptual + numeric"
+      topic: "mechanics, waves, electricity"
+      prompt: |
+        Generate JEE Main-level MCQs mixing concept checks and numeric answers with careful distractors. Keep calculations reasonable without lengthy derivations.
+  - id: "maths"
+    title: "Mathematics"
+    durationSec: 3600
+    gen:
+      type: "mcq"
+      count: 25
+      difficulty: "hard"
+      style: "calculus, algebra, coordinate geometry"
+      topic: "senior secondary mathematics"
+      prompt: |
+        Generate JEE-style MCQs with non-trivial reasoning. Balance conceptual and computational items. Only one correct option per question.
+  - id: "chemistry"
+    title: "Chemistry"
+    durationSec: 3600
+    gen:
+      type: "mcq"
+      count: 25
+      difficulty: "hard"
+      style: "physical, organic, inorganic"
+      topic: "senior secondary chemistry"
+      prompt: |
+        Generate JEE-style chemistry MCQs across physical, organic, and inorganic. Avoid obscure exceptions; prefer core principles and typical reactions.

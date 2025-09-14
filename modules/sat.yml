@@ -1,0 +1,26 @@
+id: "sat"
+name: "SAT Simulation"
+scoring: "right-only"
+sections:
+  - id: "reading"
+    title: "Reading & Writing"
+    durationSec: 3000
+    gen:
+      type: "mcq"
+      count: 20
+      difficulty: "medium"
+      style: "SAT reading and grammar"
+      topic: "general academic prose"
+      prompt: |
+        Generate SAT-style MCQs that test passage comprehension, vocabulary-in-context, and sentence revision for clarity/grammar. Avoid niche knowledge. Each option must be plausible; one best answer.
+  - id: "math"
+    title: "Math"
+    durationSec: 3600
+    gen:
+      type: "mcq"
+      count: 20
+      difficulty: "medium-hard"
+      style: "algebra, functions, linear/quadratic, word problems"
+      topic: "high school math"
+      prompt: |
+        Generate SAT-style math MCQs with solvable steps and one correct answer. Avoid heavy calculators. Include short word problems and algebraic manipulation.

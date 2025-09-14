@@ -34,6 +34,7 @@ export default function ReviewModal({ answers, onClose }:{ answers:UA[]; onClose
                     <div className="space-y-1 text-sm">
                       <p className={ok ? "text-green-400" : "text-red-400"}>Your answer: {a.selectedOption}</p>
                       {!ok && <p className="text-green-400">Correct answer: {a.correctOption}</p>}
+                      {a.explanation && <p className="text-stone-400">Explanation: {a.explanation}</p>}
                     </div>
                   </div>
                 </div>

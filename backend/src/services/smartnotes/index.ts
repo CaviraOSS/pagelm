@@ -4,7 +4,7 @@ import crypto from "crypto";
 import { StateGraph, Annotation } from "@langchain/langgraph";
 import { PDFDocument } from "pdf-lib";
 import fontkit from "@pdf-lib/fontkit";
-import llm from "../utils/llm/llm";
+import llm from "../../utils/llm/llm";
 
 type SmartNotesOptions = { topic?: string; notes?: string; filePath?: string };
 

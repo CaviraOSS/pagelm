@@ -1,0 +1,26 @@
+id: "gmat-focus"
+name: "GMAT Focus Simulation"
+scoring: "right-only"
+sections:
+  - id: "quant"
+    title: "Quantitative Reasoning"
+    durationSec: 2100
+    gen:
+      type: "mcq"
+      count: 18
+      difficulty: "medium-hard"
+      style: "data sufficiency and problem solving"
+      topic: "GMAT quant skills"
+      prompt: |
+        Generate GMAT-style quant MCQs including data sufficiency. Make statements minimally sufficient or insufficient with subtle traps. One correct option.
+  - id: "verbal"
+    title: "Verbal Reasoning"
+    durationSec: 2100
+    gen:
+      type: "mcq"
+      count: 18
+      difficulty: "medium"
+      style: "critical reasoning, reading comp, clarity"
+      topic: "business and academic English"
+      prompt: |
+        Generate GMAT-style verbal MCQs emphasizing argument evaluation, assumption, and concise sentence correction. One correct option per item.

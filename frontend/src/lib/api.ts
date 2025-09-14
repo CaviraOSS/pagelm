@@ -8,6 +8,7 @@ export type ChatDetail = { ok: true; chat: ChatInfo; messages: ChatMessage[] };
 export type ChatJSONBody = { q: string; chatId?: string };
 export type ChatPhase = "upload_start" | "upload_done" | "generating";
 export type FlashCard = { q: string; a: string; tags?: string[] };
+export type Question = { id: number; question: string; options: string[]; correct: number; hint: string; explanation: string; imageHtml?: string; };
 export type QuizStartResponse = { ok: true; quizId: string; stream: string }
 export type QuizEvent = { type: "ready" | "phase" | "quiz" | "done" | "error" | "ping"; quizId?: string; value?: string; quiz?: unknown; error?: string; t?: number }
 export type SmartNotesStart = { ok: true; noteId: string; stream: string }
@@ -18,6 +19,12 @@ export type SavedFlashcard = {
   tag: string;
   created: number;
 };
+export type ExamEvent =
+  | { type: "ready"; runId: string }
+  | { type: "phase"; value: string; examId?: string }
+  | { type: "exam"; examId: string; payload: Question[] }
+  | { type: "done" }
+  | { type: "error"; examId?: string; error: string };
 export type PodcastEvent =
   | { type: "ready"; pid: string }
   | { type: "phase"; value: string }
@@ -179,6 +186,36 @@ export async function deleteFlashcard(id: string) {
   return req<{ ok: true }>(`${env.backend}/flashcards/${encodeURIComponent(id)}`, {
     method: "DELETE",
   });
+}
+
+export async function getExams() {
+  return req<{ ok: true; exams: { id: string; name: string; sections: any[] }[] }>(
+    `${env.backend}/exams`,
+    { method: "GET" }
+  )
+}
+
+export async function startExam(examId: string) {
+  return req<{ ok: true; runId: string; stream: string }>(
+    `${env.backend}/exam`,
+    {
+      method: "POST",
+      headers: jsonHeaders({}),
+      body: JSON.stringify({ examId }),
+    }
+  )
+}
+
+export function connectExamStream(runId: string, onEvent: (ev: ExamEvent) => void) {
+  const url = wsURL(`/ws/exams?runId=${encodeURIComponent(runId)}`)
+  const ws = new WebSocket(url)
+  ws.onmessage = (m) => {
+    try {
+      onEvent(JSON.parse(m.data as string) as ExamEvent)
+    } catch {}
+  }
+  ws.onerror = () => onEvent({ type: "error", error: "stream_error" })
+  return { ws, close: () => { try { ws.close() } catch {} } }
 }
 
 export async function smartnotesStart(input: { topic?: string; notes?: string; filePath?: string }) {
