@@ -8,7 +8,7 @@
   "dependencies": {
     "@google-cloud/text-to-speech": "^6.3.0",
     "@keyv/sqlite": "^4.0.5",
-    "@langchain/anthropic": "^0.3.26",
+    "@langchain/anthropic": "^0.3.28",
     "@langchain/community": "^0.3.55",
     "@langchain/core": "^0.3.66",
     "@langchain/google-genai": "^0.2.16",
