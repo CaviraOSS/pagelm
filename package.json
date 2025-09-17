@@ -9,7 +9,7 @@
     "@google-cloud/text-to-speech": "^6.3.0",
     "@keyv/sqlite": "^4.0.5",
     "@langchain/anthropic": "^0.3.28",
-    "@langchain/community": "^0.3.55",
+    "@langchain/community": "^0.3.56",
     "@langchain/core": "^0.3.76",
     "@langchain/google-genai": "^0.2.16",
     "@langchain/langgraph": "^0.4.9",
