@@ -4,13 +4,13 @@ updates:
   - package-ecosystem: "npm"
     directory: "/"
     schedule:
-      interval: "daily"
+      interval: "weekly"
 
   # Enable version updates for npm in /frontend
   - package-ecosystem: "npm"
     directory: "/frontend"
     schedule:
-      interval: "daily"
+      interval: "weekly"
 
   # Enable version updates for Docker in root
   - package-ecosystem: "docker"
