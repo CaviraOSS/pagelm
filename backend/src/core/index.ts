@@ -1,11 +1,10 @@
-import * as dotenv from 'dotenv'
 import cors from 'cors';
 import path from 'path'
 import server from '../utils/server/server'
 import { registerRoutes } from './router'
 import { loggerMiddleware } from './middleware'
 
-dotenv.config()
+process.loadEnvFile(path.resolve(process.cwd(), '.env'))
 
 const app = server()
 

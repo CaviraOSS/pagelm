@@ -1,7 +1,6 @@
-import * as dotenv from 'dotenv'
 import path from 'path'
 
-dotenv.config({ path: path.resolve(process.cwd(), '.env') })
+process.loadEnvFile(path.resolve(process.cwd(), '.env'))
 
 export const config = {
   db_mode: process.env.db_mode || 'json',

@@ -84,7 +84,7 @@ The platform provides a modern interface for students, educators, and researcher
 
 ### Prerequisites
 
-- Node.js v20+
+- Node.js v21.18+
 - npm or pnpm
 - ffmpeg (required for podcast audio)
 - Docker (optional)
@@ -96,21 +96,35 @@ The platform provides a modern interface for students, educators, and researcher
 git clone https://github.com/caviraOSS/neuropilot.git
 cd neuropilot
 
-# Install dependencies
-cd backend && npm install
-cd ../frontend && npm install
+# Linux:
+  chmod 777 ./setup.sh
+  ./setup.sh
 
-# Setup environment
-cp .env.example .env
-# configure API keys and settings
+# Windows:
+  Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
+  ./setup.ps1
 
-# Run backend
-cd backend
-npm run dev
+# Manual (Both Linux/Windows):
+  # Install dependencies
+  cd backend
+  npm install
+  cd ../frontend
+  npm install
 
-# Run frontend
-cd frontend
-npm run dev
+  # Setup environment
+  cd ..
+  npm i -g nodemon
+  cp .env.example .env
+  # Make sure to configure API keys and settings in .env
+
+  # Run these two commands in separate terminals but inside the project directory.
+  # Run backend
+  cd backend
+  npm run dev
+
+  # Run frontend
+  cd frontend
+  npm run dev
 ```
 
 👉 Access at: **http://localhost:5173**
