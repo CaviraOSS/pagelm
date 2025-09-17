@@ -11,7 +11,7 @@
     "@langchain/anthropic": "^0.3.28",
     "@langchain/community": "^0.3.56",
     "@langchain/core": "^0.3.76",
-    "@langchain/google-genai": "^0.2.16",
+    "@langchain/google-genai": "^0.2.18",
     "@langchain/langgraph": "^0.4.9",
     "@langchain/ollama": "^0.2.4",
     "@langchain/openai": "^0.6.12",
