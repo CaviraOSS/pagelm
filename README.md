@@ -5,7 +5,7 @@
 
 **An open-source AI-powered education platform that transforms study materials into interactive learning resources**
 
-[Report Bug](https://github.com/caviraOSS/neuropilot/issues) • [Request Feature](https://github.com/caviraOSS/neuropilot/issues) • [Discord server](https://discord.gg/76QMKwj2J4)
+[Report Bug](https://github.com/caviraOSS/neuropilot/issues) • [Request Feature](https://github.com/caviraOSS/neuropilot/issues) • [Discord server](https://discord.gg/P7HaRayqTh)
 
 </div>
 
@@ -14,7 +14,7 @@
   <a href="https://nodejs.org/"><img src="https://img.shields.io/badge/node-%3E%3D20.0.0-brightgreen.svg" alt="Node.js Version"></a>
   <a href="https://reactjs.org/"><img src="https://img.shields.io/badge/React-18+-blue.svg" alt="React"></a>
   <a href="https://www.typescriptlang.org/"><img src="https://img.shields.io/badge/TypeScript-5.0+-blue.svg" alt="TypeScript"></a>
-  <a href="https://discord.gg/76QMKwj2J4"><img alt="Discord" src="https://img.shields.io/discord/1379682804849180844?label=Discord%20server"></a>
+  <a href="https://discord.gg/P7HaRayqTh"><img alt="Discord" src="https://img.shields.io/discord/1379682804849180844?label=Discord%20server"></a>
 </p>
 
 ---
@@ -159,7 +159,7 @@ See `.env.example` for all options.
 
 ## 👥 Community
 
-Join our [Discord](https://discord.gg/76QMKwj2J4) community to connect, share ideas, and take part in exciting discussions!
+Join our [Discord](https://discord.gg/P7HaRayqTh) community to connect, share ideas, and take part in exciting discussions!
 
 ---
 
