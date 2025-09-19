@@ -8,7 +8,7 @@ export const makeLLM: MkLLM = (cfg: any) => {
     apiKey: cfg.openai || process.env.OPENAI_API_KEY,
     temperature: cfg.temp ?? 0.7,
     maxTokens: cfg.max_tokens,
-    base_url: process.env.OPENAI_BASE_URL
+    baseUrl: process.env.OPENAI_BASE_URL
   })
   return wrapChat(m)
 }
