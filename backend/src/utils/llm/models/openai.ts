@@ -17,5 +17,6 @@ export const makeEmbeddings: MkEmb = (cfg: any): EmbeddingsLike => {
   return new OpenAIEmbeddings({
     model: cfg.openai_embed_model || 'text-embedding-3-large',
     apiKey: cfg.openai || process.env.OPENAI_API_KEY,
+    baseUrl: process.env.OPENAI_BASE_URL
   })
 }
