@@ -41,6 +41,29 @@ export type SmartNotesEvent =
   | { type: "done" }
   | { type: "error"; error: string }
   | { type: "ping"; t: number }
+export type StudyMaterials = {
+  summary: string;
+  keyPoints: string[];
+  topics: string[];
+  categories: string[];
+  searchableKeywords: string[];
+  studyGuide: {
+    mainConcepts: string[];
+    importantTerms: { term: string; definition: string; }[];
+    questions: string[];
+    takeaways: string[];
+  };
+  timestamps?: { time: number; content: string; topic: string; }[];
+};
+
+export type TranscriptionResponse = {
+  ok: boolean;
+  transcription?: string;
+  provider?: string;
+  confidence?: number;
+  error?: string;
+  studyMaterials?: StudyMaterials;
+}
 export type ChatEvent =
   | { type: "ready"; chatId: string }
   | { type: "phase"; value: ChatPhase }
@@ -212,10 +235,10 @@ export function connectExamStream(runId: string, onEvent: (ev: ExamEvent) => voi
   ws.onmessage = (m) => {
     try {
       onEvent(JSON.parse(m.data as string) as ExamEvent)
-    } catch {}
+    } catch { }
   }
   ws.onerror = () => onEvent({ type: "error", error: "stream_error" })
-  return { ws, close: () => { try { ws.close() } catch {} } }
+  return { ws, close: () => { try { ws.close() } catch { } } }
 }
 
 export async function smartnotesStart(input: { topic?: string; notes?: string; filePath?: string }) {
@@ -232,10 +255,10 @@ export function connectSmartnotesStream(noteId: string, onEvent: (ev: SmartNotes
   ws.onmessage = (m) => {
     try {
       onEvent(JSON.parse(m.data as string) as SmartNotesEvent);
-    } catch {}
+    } catch { }
   };
   ws.onerror = () => onEvent({ type: "error", error: "stream_error" });
-  return { ws, close: () => { try { ws.close(); } catch {} } };
+  return { ws, close: () => { try { ws.close(); } catch { } } };
 }
 
 export function flashcards(topic: string) {
@@ -283,6 +306,17 @@ export function connectQuizStream(quizId: string, onEvent: (ev: QuizEvent) => vo
       onEvent(JSON.parse(m.data as string) as QuizEvent)
     } catch { }
   }; ws.onerror = () => onEvent({ type: "error", error: "stream_error" } as any); return { ws, close: () => { try { ws.close() } catch { } } }
+}
+
+export async function transcribeAudio(file: File) {
+  const formData = new FormData();
+  formData.append('file', file);
+
+  return req<TranscriptionResponse>(`${env.backend}/transcriber`, {
+    method: 'POST',
+    body: formData,
+    timeout: Math.max(env.timeout, 180000),
+  });
 }
 
 export function err(e: unknown) {

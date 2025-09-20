@@ -1,5 +1,6 @@
 import SmartNotes from "../components/Tools/SmartNotes"
 import PodcastGenerator from "../components/Tools/PodcastGenerator"
+import Transcriber from "../components/Tools/Transcriber"
 import ComingSoon from "../components/Tools/ComingSoon"
 
 export default function Tools() {
@@ -26,6 +27,7 @@ export default function Tools() {
         <div className="grid gap-6">
           <SmartNotes />
           <PodcastGenerator />
+          <Transcriber />
           <ComingSoon />
         </div>
       </div>

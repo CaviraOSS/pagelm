@@ -41,4 +41,7 @@ export const config = {
   google_creds: process.env.GOOGLE_APPLICATION_CREDENTIALS || '',
   tts_voice_google: process.env.TTS_VOICE_GOOGLE || 'en-US-Neural2-F',
   tts_voice_alt_google: process.env.TTS_VOICE_ALT_GOOGLE || 'en-US-Neural2-D',
+  transcription_provider: process.env.TRANSCRIPTION_PROVIDER || 'openai',
+  assemblyai_api_key: process.env.ASSEMBLYAI_API_KEY || '',
+  google_project_id: process.env.GOOGLE_CLOUD_PROJECT_ID || '',
 }
