@@ -3,7 +3,8 @@ import path from "path"
 import crypto from "crypto"
 import { StateGraph, Annotation } from "@langchain/langgraph"
 import llm from "../../utils/llm/llm"
-import { GenSpec, GenSpecMCQ, GenSpecShort, QuizLikeItem } from "./types"
+import { GenSpec, QuizLikeItem } from "./types"
+import { normalizeTopic } from "../../utils/text/normalize"
 
 export type QuizItem = {
   id: number
@@ -122,6 +123,7 @@ function validItem(x: any) {
 function validQuiz(a: any, count: number): a is QuizItem[] {
   return Array.isArray(a) && a.length === count && a.every(validItem)
 }
+
 async function ask(sys: string, user: string, tag: string) {
   const msgs = [
     { role: "system", content: sys },
@@ -129,7 +131,6 @@ async function ask(sys: string, user: string, tag: string) {
   ] as const
   const r = await llm.invoke([...msgs] as any)
   const raw = typeof r === "string" ? r : String((r as any)?.content ?? "")
-  console.log("[examlab/generator] raw model output (first 400)", tag, ":", raw.slice(0, 400))
   const txt = extractArray(stripFences(raw))
   return tryParse<any>(txt)
 }
@@ -194,29 +195,31 @@ g.addNode("gen", nGen)
 g.addNode("retry", nRetry)
 g.addNode("normalize", nNormalize)
 g.addNode("validate", nValidate)
-;(g as any).addEdge("__start__", "cache")
-;(g as any).addEdge("cache", "gen")
-;(g as any).addEdge("gen", "retry")
-;(g as any).addEdge("retry", "normalize")
-;(g as any).addEdge("normalize", "validate")
-;(g as any).addEdge("validate", "__end__")
+  ; (g as any).addEdge("__start__", "cache")
+  ; (g as any).addEdge("cache", "gen")
+  ; (g as any).addEdge("gen", "retry")
+  ; (g as any).addEdge("retry", "normalize")
+  ; (g as any).addEdge("normalize", "validate")
+  ; (g as any).addEdge("validate", "__end__")
 
 const compiled = g.compile()
 
 export async function generateSectionItems(gen: GenSpec, seed: string): Promise<QuizLikeItem[]> {
   if (gen.type === "mcq") {
     const count = Math.max(1, Number(gen.count || 5))
-    const sys = SYS(count, gen.style, gen.difficulty, gen.topic)
-    const user = `${gen.prompt}\nSeed: ${seed}\nReturn only the JSON array with ${count} objects.`
-    const key = keyOf(JSON.stringify({ t: "mcq", count, style: gen.style, difficulty: gen.difficulty, topic: gen.topic, prompt: gen.prompt }))
+    const sys = SYS(count, gen.style, gen.difficulty, normalizeTopic(gen.topic))
+    const promptNorm = normalizeTopic(gen.prompt)
+    const user = `${promptNorm}\nSeed: ${seed}\nReturn only the JSON array with ${count} objects.`
+    const key = keyOf(JSON.stringify({ t: "mcq", count, style: gen.style, difficulty: gen.difficulty, topic: normalizeTopic(gen.topic), prompt: promptNorm }))
     const s = await compiled.invoke({ key, sys, user, count, arr: null, norm: [] })
     return s.norm
   }
   if (gen.type === "short") {
     const count = Math.max(1, Number(gen.count || 5))
-    const sys = SYS(count, gen.style, gen.difficulty, gen.topic)
-    const user = `First think of ${count} strong short-answer questions for the topic and then convert each into a 4-option MCQ with one correct answer. Keep answers factual and concise.\n\n${gen.prompt}\nSeed: ${seed}\nReturn only the JSON array with ${count} objects.`
-    const key = keyOf(JSON.stringify({ t: "short→mcq", count, style: gen.style, difficulty: gen.difficulty, topic: gen.topic, prompt: gen.prompt }))
+    const sys = SYS(count, gen.style, gen.difficulty, normalizeTopic(gen.topic))
+    const promptNorm = normalizeTopic(gen.prompt)
+    const user = `First think of ${count} strong short-answer questions for the topic and then convert each into a 4-option MCQ with one correct answer. Keep answers factual and concise.\n\n${promptNorm}\nSeed: ${seed}\nReturn only the JSON array with ${count} objects.`
+    const key = keyOf(JSON.stringify({ t: "short→mcq", count, style: gen.style, difficulty: gen.difficulty, topic: normalizeTopic(gen.topic), prompt: promptNorm }))
     const s = await compiled.invoke({ key, sys, user, count, arr: null, norm: [] })
     return s.norm
   }

@@ -1,45 +1,61 @@
-import fs from "fs";
-import path from "path";
-import crypto from "crypto";
-import { StateGraph, Annotation } from "@langchain/langgraph";
-import { PDFDocument } from "pdf-lib";
-import fontkit from "@pdf-lib/fontkit";
-import llm from "../../utils/llm/llm";
+import fs from "fs"
+import path from "path"
+import { PDFDocument, StandardFonts, rgb } from "pdf-lib"
+import fontkit from "@pdf-lib/fontkit"
+import llm from "../../utils/llm/llm"
+import { normalizeTopic } from "../../utils/text/normalize"
 
-type SmartNotesOptions = { topic?: string; notes?: string; filePath?: string };
+export type SmartNotesOptions = { topic?: any; notes?: string; filePath?: string }
+export type SmartNotesResult = { ok: boolean; file: string }
 
 function sanitizeText(s: string) {
-  if (!s) return "";
+  if (!s) return ""
   return s
     .replace(/\u2192/g, "->")
     .replace(/\u00b2/g, "^2")
     .replace(/\u00b3/g, "^3")
-    .replace(/[^\x00-\x7F]/g, "");
+    .replace(/[^\x00-\x7F]/g, "")
 }
 
 function wrap(s: string, max = 90) {
   return s
     .split("\n")
-    .map((line) => {
-      const out: string[] = [];
-      let cur = "";
+    .map(line => {
+      const out: string[] = []
+      let cur = ""
       for (const w of line.split(/\s+/)) {
         if ((cur + " " + w).trim().length > max) {
-          out.push(cur);
-          cur = w;
-        } else cur = (cur ? cur + " " : "") + w;
+          out.push(cur)
+          cur = w
+        } else {
+          cur = (cur ? cur + " " : "") + w
+        }
       }
-      if (cur) out.push(cur);
-      return out.join("\n");
+      if (cur) out.push(cur)
+      return out.join("\n")
     })
-    .join("\n");
+    .join("\n")
 }
 
 async function readInput(opts: SmartNotesOptions) {
-  if (opts.notes) return opts.notes;
-  if (opts.filePath) return await fs.promises.readFile(opts.filePath, "utf8");
-  if (opts.topic) return `Generate detailed Cornell notes on: ${opts.topic}`;
-  throw new Error("No input");
+  if (opts.notes) return opts.notes
+  if (opts.filePath) return await fs.promises.readFile(opts.filePath, "utf8")
+  if (opts.topic) return `Generate detailed Cornell notes on: ${normalizeTopic(opts.topic)}`
+  throw new Error("No input")
+}
+
+function extractFirstJsonObject(s: string) {
+  let depth = 0, start = -1
+  for (let i = 0; i < s.length; i++) {
+    const ch = s[i]
+    if (ch === "{") { if (depth === 0) start = i; depth++ }
+    else if (ch === "}") { depth--; if (depth === 0 && start !== -1) return s.slice(start, i + 1) }
+  }
+  return ""
+}
+
+function safeParse<T = any>(raw: string): T | null {
+  try { return JSON.parse(raw) as T } catch { return null }
 }
 
 async function generateNotes(text: string) {
@@ -68,137 +84,140 @@ RULES
 - Use plain text only.
 - If a field has no content, return "" or [].
 - For each question, the corresponding answer must be in the same index in answers.
-`;
-  const r = await llm.invoke([
-    { role: "user", content: prompt + "\n\nINPUT:\n" + text },
-  ]);
-  const raw = typeof r === "string" ? r : String((r as any)?.content ?? "");
-  return JSON.parse(raw);
+`.trim()
+
+  const r1 = await llm.invoke([{ role: "user", content: prompt + "\n\nINPUT:\n" + text }] as any)
+  const raw1 = typeof r1 === "string" ? r1 : String((r1 as any)?.content ?? "")
+  const parsed1 = safeParse<any>(extractFirstJsonObject(raw1) || raw1)
+  if (parsed1 && typeof parsed1 === "object") return parsed1
+
+  const retrySys = `Return only a JSON object matching the schema. No markdown. No extra text.`
+  const r2 = await llm.invoke([
+    { role: "system", content: retrySys },
+    { role: "user", content: prompt + "\n\nINPUT:\n" + text }
+  ] as any)
+  const raw2 = typeof r2 === "string" ? r2 : String((r2 as any)?.content ?? "")
+  const parsed2 = safeParse<any>(extractFirstJsonObject(raw2) || raw2)
+  if (parsed2 && typeof parsed2 === "object") return parsed2
+
+  const fallback = {
+    title: "Notes",
+    notes: sanitizeText(text).slice(0, 4000),
+    summary: "",
+    questions: [],
+    answers: []
+  }
+  return fallback
 }
 
-async function fillTemplate(data: any) {
-  const dir = path.join(process.cwd(), "assets", "smartnotes");
-  const files = (await fs.promises.readdir(dir)).filter((f) =>
-    f.endsWith(".pdf")
-  );
-  if (!files.length) throw new Error("No PDF templates");
-  const chosen = files[Math.floor(Math.random() * files.length)];
-  const pdfBytes = await fs.promises.readFile(path.join(dir, chosen));
-  const pdfDoc = await PDFDocument.load(pdfBytes);
-  pdfDoc.registerFontkit(fontkit);
-  const form = pdfDoc.getForm();
-  const fontPath = path.join(process.cwd(), "assets", "fonts", "Lexend.ttf");
-  const fontBytes = await fs.promises.readFile(fontPath);
-  const font = await pdfDoc.embedFont(fontBytes, { subset: true });
+async function fillTemplateFormPDF(data: any) {
+  const dir = path.join(process.cwd(), "assets", "smartnotes")
+  const hasDir = fs.existsSync(dir)
+  if (!hasDir) return null
+  const files = (await fs.promises.readdir(dir)).filter(f => f.endsWith(".pdf"))
+  if (!files.length) return null
+
+  const chosen = files[Math.floor(Math.random() * files.length)]
+  const pdfBytes = await fs.promises.readFile(path.join(dir, chosen))
+  const pdfDoc = await PDFDocument.load(pdfBytes)
+  pdfDoc.registerFontkit(fontkit)
+
+  const form = pdfDoc.getForm()
   try {
-    form.updateFieldAppearances(font);
-  } catch {}
-  try {
-    form.getTextField("topic").setText(sanitizeText(data.title || ""));
-  } catch {}
-  try {
-    form.getTextField("notes").setText(wrap(sanitizeText(data.notes || "")));
-  } catch {}
-  try {
-    form
-      .getTextField("summary")
-      .setText(wrap(sanitizeText(data.summary || "")));
-  } catch {}
+    const fontPath = path.join(process.cwd(), "assets", "fonts", "Lexend.ttf")
+    if (fs.existsSync(fontPath)) {
+      const fontBytes = await fs.promises.readFile(fontPath)
+      const font = await pdfDoc.embedFont(fontBytes, { subset: true })
+      try { form.updateFieldAppearances(font) } catch { }
+    }
+  } catch { }
+
+  try { form.getTextField("topic").setText(sanitizeText(data.title || "")) } catch { }
+  try { form.getTextField("notes").setText(wrap(sanitizeText(data.notes || ""))) } catch { }
+  try { form.getTextField("summary").setText(wrap(sanitizeText(data.summary || ""))) } catch { }
   try {
     const qna = (data.questions || [])
       .map((q: string, i: number) => {
-        const a =
-          data.answers && data.answers[i] ? `\nAnswer: ${data.answers[i]}` : "";
-        return `• ${q}${a}`;
+        const a = data.answers && data.answers[i] ? `\nAnswer: ${data.answers[i]}` : ""
+        return `• ${q}${a}`
       })
-      .join("\n\n");
-    form.getTextField("questions").setText(sanitizeText(qna));
-  } catch {}
-  const outDir = path.join(process.cwd(), "storage", "smartnotes");
-  await fs.promises.mkdir(outDir, { recursive: true });
-  const safeTitle = sanitizeText(data.title || "notes")
-    .replace(/[^a-z0-9]/gi, "_")
-    .slice(0, 50);
-  const outPath = path.join(outDir, `${safeTitle}.pdf`);
-  const outBytes = await pdfDoc.save();
-  await fs.promises.writeFile(outPath, outBytes);
-  return outPath;
+      .join("\n\n")
+    form.getTextField("questions").setText(sanitizeText(qna))
+  } catch { }
+
+  const outDir = path.join(process.cwd(), "storage", "smartnotes")
+  await fs.promises.mkdir(outDir, { recursive: true })
+  const safeTitle = sanitizeText(data.title || "notes").replace(/[^a-z0-9]/gi, "_").slice(0, 50)
+  const ts = new Date().toISOString().replace(/[:.]/g, "-")
+  const outPath = path.join(outDir, `${safeTitle || "notes"}_${ts}.pdf`)
+  const outBytes = await pdfDoc.save()
+  await fs.promises.writeFile(outPath, outBytes)
+  return outPath
 }
 
-const cacheDir = path.join(process.cwd(), "storage", "cache", "smartnotes");
-if (!fs.existsSync(cacheDir)) fs.mkdirSync(cacheDir, { recursive: true });
-const keyOf = (x: string) =>
-  crypto.createHash("sha256").update(x).digest("hex");
-const readCache = (k: string) => {
-  const f = path.join(cacheDir, k + ".json");
-  return fs.existsSync(f) ? JSON.parse(fs.readFileSync(f, "utf8")) : null;
-};
-const writeCache = (k: string, v: any) =>
-  fs.writeFileSync(path.join(cacheDir, k + ".json"), JSON.stringify(v));
+async function createSimplePDF(data: any) {
+  const pdfDoc = await PDFDocument.create()
+  const font = await pdfDoc.embedStandardFont(StandardFonts.Helvetica)
+  const page = pdfDoc.addPage([612, 792])
 
-type Ctx = {
-  topic?: string;
-  notes?: string;
-  filePath?: string;
-  input: string;
-  data: any;
-  outPath: string;
-};
+  const margin = 48
+  const width = page.getWidth() - margin * 2
+  let y = page.getHeight() - margin
 
-const S = Annotation.Root({
-  topic: Annotation<string | undefined>(),
-  notes: Annotation<string | undefined>(),
-  filePath: Annotation<string | undefined>(),
-  input: Annotation<string>(),
-  data: Annotation<any>(),
-  outPath: Annotation<string>(),
-});
+  const title = sanitizeText(data.title || "Notes")
+  page.drawText(title, { x: margin, y, size: 20, font, color: rgb(0, 0, 0) })
+  y -= 28
 
-const nInput = async (s: Ctx) => {
-  const input = await readInput({
-    topic: s.topic,
-    notes: s.notes,
-    filePath: s.filePath,
-  });
-  return { ...s, input };
-};
+  const sections = [
+    { h: "Notes", t: sanitizeText(data.notes || "") },
+    { h: "Summary", t: sanitizeText(data.summary || "") },
+    {
+      h: "Questions",
+      t: (data.questions || [])
+        .map((q: string, i: number) => {
+          const a = data.answers && data.answers[i] ? `\nAnswer: ${data.answers[i]}` : ""
+          return `• ${q}${a}`
+        })
+        .join("\n\n")
+    }
+  ]
 
-const nLLM = async (s: Ctx) => {
-  const k = keyOf(s.input);
-  const c = readCache(k);
-  if (c) return { ...s, data: c };
-  const data = await generateNotes(s.input);
-  writeCache(k, data);
-  return { ...s, data };
-};
+  for (const sec of sections) {
+    if (!sec.t) continue
+    page.drawText(sec.h, { x: margin, y, size: 14, font, color: rgb(0, 0, 0) })
+    y -= 18
 
-const nPDF = async (s: Ctx) => {
-  const outPath = await fillTemplate(s.data);
-  return { ...s, outPath };
-};
+    const lines = wrap(sec.t, 90).split("\n")
+    for (const line of lines) {
+      if (y < margin + 24) {
+        y = page.getHeight() - margin
+        const p = pdfDoc.addPage([612, 792])
+        p.drawText(title, { x: margin, y, size: 12, font, color: rgb(0, 0, 0) })
+        y -= 20
+      }
+      page.drawText(line, { x: margin, y, size: 11, font, color: rgb(0, 0, 0) })
+      y -= 14
+    }
+    y -= 12
+  }
 
-const g = new StateGraph(S);
+  const outDir = path.join(process.cwd(), "storage", "smartnotes")
+  await fs.promises.mkdir(outDir, { recursive: true })
+  const safeTitle = sanitizeText(data.title || "notes").replace(/[^a-z0-9]/gi, "_").slice(0, 50)
+  const ts = new Date().toISOString().replace(/[:.]/g, "-")
+  const outPath = path.join(outDir, `${safeTitle || "notes"}_${ts}.pdf`)
+  const outBytes = await pdfDoc.save()
+  await fs.promises.writeFile(outPath, outBytes)
+  return outPath
+}
 
-g.addNode("readInput", nInput);
-g.addNode("genNotes", nLLM);
-g.addNode("fillPdf", nPDF);
+export async function handleSmartNotes(opts: SmartNotesOptions): Promise<SmartNotesResult> {
+  const input = await readInput(opts)
+  const data = await generateNotes(input)
 
-const edge = (from: string, to: string) =>
-  (g as any).addEdge(from as any, to as any);
+  const filled = await fillTemplateFormPDF(data)
+  if (filled) return { ok: true, file: filled }
 
-edge("__start__", "readInput");
-edge("readInput", "genNotes");
-edge("genNotes", "fillPdf");
-edge("fillPdf", "__end__");
-
-const compiled = g.compile();
-
-export async function handleSmartNotes(opts: SmartNotesOptions) {
-  const s = await compiled.invoke({
-    ...opts,
-    input: "",
-    data: null,
-    outPath: "",
-  });
-  return { ok: true, file: s.outPath };
+  const simple = await createSimplePDF(data)
+  return { ok: true, file: simple }
 }

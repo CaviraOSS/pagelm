@@ -1,61 +1,41 @@
-import fs from "fs";
-import path from "path";
-import crypto from "crypto";
-import { StateGraph, Annotation } from "@langchain/langgraph";
-import { getRetriever } from "../../utils/database/db";
-import llm, { embeddings } from "../../utils/llm/llm";
+import fs from "fs"
+import path from "path"
+import crypto from "crypto"
+import llm from "../../utils/llm/llm"
+import { execDirect } from "../../agents/runtime"
+import { normalizeTopic } from "../../utils/text/normalize"
 
-export type AskCard = { q: string; a: string; tags?: string[] };
-export type AskPayload = {
-  topic: string;
-  answer: string;
-  flashcards: AskCard[];
-};
+export type AskCard = { q: string; a: string; tags?: string[] }
+export type AskPayload = { topic: string; answer: string; flashcards: AskCard[] }
 
 function toText(out: any): string {
-  if (!out) return "";
-  if (typeof out === "string") return out;
-  if (typeof out?.content === "string") return out.content;
-  if (Array.isArray(out?.content))
-    return out.content
-      .map((p: any) => (typeof p === "string" ? p : p?.text ?? ""))
-      .join("");
-  if (Array.isArray(out?.generations) && out.generations[0]?.text)
-    return out.generations[0].text;
-  return String(out ?? "");
+  if (!out) return ""
+  if (typeof out === "string") return out
+  if (typeof out?.content === "string") return out.content
+  if (Array.isArray(out?.content)) return out.content.map((p: any) => (typeof p === "string" ? p : p?.text ?? "")).join("")
+  if (Array.isArray(out?.generations) && out.generations[0]?.text) return out.generations[0].text
+  return String(out ?? "")
 }
 
 function guessTopic(q: string): string {
-  const t = q.trim().replace(/\s+/g, " ");
-  if (t.length <= 80) return t;
-  const m =
-    t.match(/\babout\s+([^?.!]{3,80})/i) ||
-    t.match(/\b(on|of|for|in)\s+([^?.!]{3,80})/i);
-  return (m?.[2] || m?.[1] || t.slice(0, 80)).trim();
+  const t = String(q ?? "").trim().replace(/\s+/g, " ")
+  if (t.length <= 80) return t
+  const m = t.match(/\babout\s+([^?.!]{3,80})/i) || t.match(/\b(on|of|for|in)\s+([^?.!]{3,80})/i)
+  return (m?.[2] || m?.[1] || t.slice(0, 80)).trim()
 }
 
 function extractFirstJsonObject(s: string): string {
-  let depth = 0,
-    start = -1;
+  let depth = 0, start = -1
   for (let i = 0; i < s.length; i++) {
-    const ch = s[i];
-    if (ch === "{") {
-      if (depth === 0) start = i;
-      depth++;
-    } else if (ch === "}") {
-      depth--;
-      if (depth === 0 && start !== -1) return s.slice(start, i + 1);
-    }
+    const ch = s[i]
+    if (ch === "{") { if (depth === 0) start = i; depth++ }
+    else if (ch === "}") { depth--; if (depth === 0 && start !== -1) return s.slice(start, i + 1) }
   }
-  return "";
+  return ""
 }
 
 function tryParse<T = unknown>(s: string): T | null {
-  try {
-    return JSON.parse(s) as T;
-  } catch {
-    return null;
-  }
+  try { return JSON.parse(s) as T } catch { return null }
 }
 
 const SYSTEM_PROMPT = `
@@ -124,123 +104,51 @@ RESTRICTIONS
 - Output ONLY the JSON object.
 - No prose or explanation outside JSON.
 - No backticks around JSON.
-`.trim();
+`.trim()
 
-const cacheDir = path.join(process.cwd(), "storage", "cache", "ask");
-if (!fs.existsSync(cacheDir)) fs.mkdirSync(cacheDir, { recursive: true });
-const keyOf = (x: any) =>
-  crypto
-    .createHash("sha256")
-    .update(typeof x === "string" ? x : JSON.stringify(x))
-    .digest("hex");
-const readCache = (k: any) => {
-  const f = path.join(cacheDir, keyOf(k) + ".json");
-  return fs.existsSync(f) ? JSON.parse(fs.readFileSync(f, "utf8")) : null;
-};
-const writeCache = (k: any, v: any) => {
-  const f = path.join(cacheDir, keyOf(k) + ".json");
-  fs.writeFileSync(f, JSON.stringify(v));
-};
+const cacheDir = path.join(process.cwd(), "storage", "cache", "ask")
+if (!fs.existsSync(cacheDir)) fs.mkdirSync(cacheDir, { recursive: true })
+const keyOf = (x: any) => crypto.createHash("sha256").update(typeof x === "string" ? x : JSON.stringify(x)).digest("hex")
+const readCache = (k: any) => { const f = path.join(cacheDir, keyOf(k) + ".json"); return fs.existsSync(f) ? JSON.parse(fs.readFileSync(f, "utf8")) : null }
+const writeCache = (k: any, v: any) => { const f = path.join(cacheDir, keyOf(k) + ".json"); fs.writeFileSync(f, JSON.stringify(v)) }
 
-type Ctx = {
-  q: string;
-  ns: string;
-  k: number;
-  ctx: string;
-  topic: string;
-  draft: string;
-  out: AskPayload;
-};
+export async function handleAsk(q: string, ns?: string, k = 6): Promise<AskPayload> {
+  const safeQ = normalizeTopic(q)
+  const nsFinal = typeof ns === "string" && ns.trim() ? ns : "neuropilot"
 
-const S = Annotation.Root({
-  q: Annotation<string>(),
-  ns: Annotation<string>(),
-  k: Annotation<number>(),
-  ctx: Annotation<string>(),
-  topic: Annotation<string>(),
-  draft: Annotation<string>(),
-  out: Annotation<AskPayload>(),
-});
+  const rag = await execDirect({
+    agent: "researcher",
+    plan: { steps: [{ tool: "rag.search", input: { q: safeQ, ns: nsFinal, k }, timeoutMs: 8000, retries: 1 }] },
+    ctx: { ns: nsFinal }
+  })
 
-const nRetrieve = async (s: Ctx) => {
-  const ck = { t: "retr", q: s.q, ns: s.ns, k: s.k };
-  const c = readCache(ck);
-  if (c) return { ...s, ctx: c.ctx, topic: c.topic };
-  const retriever = await getRetriever(s.ns || "neuropilot", embeddings);
-  const docs = await retriever.invoke(s.q);
-  const ctx =
-    (docs || [])
-      .slice(0, s.k)
-      .map((d: any) => d.pageContent)
-      .join("\n\n") || "NO_CONTEXT";
-  const topic = guessTopic(s.q) || "General";
-  writeCache(ck, { ctx, topic });
-  return { ...s, ctx, topic };
-};
+  const ctxDocs = Array.isArray(rag) ? (rag as Array<{ text?: string }>) : []
+  const ctx = ctxDocs.map(d => d?.text || "").join("\n\n") || "NO_CONTEXT"
+  const topic = guessTopic(safeQ) || "General"
 
-const nSynthesize = async (s: Ctx) => {
-  const ck = { t: "ans", q: s.q, ctx: s.ctx, topic: s.topic };
-  const c = readCache(ck);
-  if (c) return { ...s, draft: c.draft };
+  const ck = { t: "ans", q: safeQ, ctx, topic }
+  const cached = readCache(ck)
+  if (cached) return cached
+
   const messages = [
     { role: "system", content: SYSTEM_PROMPT },
-    {
-      role: "user",
-      content: `Context:\n${s.ctx}\n\nQuestion:\n${s.q}\n\nTopic:\n${s.topic}\n\nReturn only the JSON object.`,
-    },
-  ] as const;
-  const res = await llm.call(messages as any);
-  const draft = toText(res).trim();
-  writeCache(ck, { draft });
-  return { ...s, draft };
-};
+    { role: "user", content: `Context:\n${ctx}\n\nQuestion:\n${safeQ}\n\nTopic:\n${topic}\n\nReturn only the JSON object.` }
+  ] as const
 
-const nParse = async (s: Ctx) => {
-  const jsonStr = extractFirstJsonObject(s.draft) || s.draft;
-  const parsed = tryParse<any>(jsonStr);
-  if (parsed && typeof parsed === "object") {
-    const topic =
-      typeof parsed.topic === "string" ? parsed.topic : s.topic || "General";
-    const answer = typeof parsed.answer === "string" ? parsed.answer : "";
-    const flashcards = Array.isArray(parsed.flashcards)
-      ? (parsed.flashcards as AskCard[])
-      : [];
-    return { ...s, out: { topic, answer, flashcards } };
-  }
-  return {
-    ...s,
-    out: { topic: s.topic || "General", answer: s.draft, flashcards: [] },
-  };
-};
+  const res = await llm.call(messages as any)
+  const draft = toText(res).trim()
+  const jsonStr = extractFirstJsonObject(draft) || draft
+  const parsed = tryParse<any>(jsonStr)
 
-const g = new StateGraph(S);
-g.addNode("retrieve", nRetrieve);
-g.addNode("synthesize", nSynthesize);
-g.addNode("parse", nParse);
+  const out: AskPayload =
+    parsed && typeof parsed === "object"
+      ? {
+        topic: typeof parsed.topic === "string" ? parsed.topic : topic,
+        answer: typeof parsed.answer === "string" ? parsed.answer : "",
+        flashcards: Array.isArray(parsed.flashcards) ? (parsed.flashcards as AskCard[]) : [],
+      }
+      : { topic, answer: draft, flashcards: [] }
 
-const edge = (from: string, to: string) =>
-  (g as any).addEdge(from as any, to as any);
-
-edge("__start__", "retrieve");
-edge("retrieve", "synthesize");
-edge("synthesize", "parse");
-edge("parse", "__end__");
-
-const compiled = g.compile();
-
-export async function handleAsk(
-  q: string,
-  ns?: string,
-  k = 6
-): Promise<AskPayload> {
-  const s = await compiled.invoke({
-    q,
-    ns: ns || "neuropilot",
-    k,
-    ctx: "",
-    topic: "",
-    draft: "",
-    out: { topic: "", answer: "", flashcards: [] },
-  });
-  return s.out;
+  writeCache(ck, out)
+  return out
 }
