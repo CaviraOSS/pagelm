@@ -46,7 +46,8 @@ The platform provides a modern interface for students, educators, and researcher
 - **Flashcards** – Extract non-overlapping flashcards for spaced repetition
 - **Quizzes** – Create interactive quizzes with hints, explanations, and scoring
 - **AI Podcast** – Convert notes and topics into engaging audio content for learning on the go
-- **ExamLab** - Simulate any exam, get feedbacks and be prepared for the exam
+- **Voice Transcribe** - Convert lecture recordings and voice notes into organized, searchable study materials instantly.
+- **ExamLab** - Simulate any exam, get feedback, and be prepared for the exam
 
 ### Supported AI Models
 
