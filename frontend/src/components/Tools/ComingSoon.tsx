@@ -120,42 +120,6 @@ export default function ComingSoon() {
           </div>
         </div>
 
-        {/* Voice Note Transcriber */}
-        <div className="group rounded-2xl bg-zinc-950/50 border border-zinc-800 p-4 hover:border-purple-500/50 transition-all duration-300 hover:shadow-lg hover:shadow-purple-500/10 opacity-70 hover:opacity-90">
-          <div className="flex items-start justify-between gap-3">
-            <div className="flex-1">
-              <div className="flex items-center gap-2 mb-1">
-                <div className="text-xs uppercase tracking-wide text-purple-400 font-semibold">
-                  audio to text
-                </div>
-              </div>
-              <div className="text-white font-semibold text-lg mb-2">
-                Voice Note Transcriber
-              </div>
-              <div className="text-zinc-400 text-sm leading-relaxed">
-                Convert lecture recordings and voice notes into organized,
-                searchable study materials instantly.
-              </div>
-            </div>
-            <div className="p-3 rounded-xl bg-gradient-to-br from-purple-500/20 to-violet-500/20 border border-purple-500/30">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="size-5 text-purple-400"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth="2"
-                  d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z"
-                />
-              </svg>
-            </div>
-          </div>
-        </div>
-
         {/* Homework Planner */}
         <div className="group rounded-2xl bg-zinc-950/50 border border-zinc-800 p-4 hover:border-lime-500/50 transition-all duration-300 hover:shadow-lg hover:shadow-lime-500/10 opacity-70 hover:opacity-90">
           <div className="flex items-start justify-between gap-3">
