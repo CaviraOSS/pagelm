@@ -1,10 +1,7 @@
+import "./agents"
 import { randomBytes } from "crypto"
 import { get } from "./registry"
-
-export type ExecStep = { tool: string; input?: any; timeoutMs?: number; retries?: number }
-export type ExecPlan = { steps: ExecStep[] }
-export type ExecIn = { agent: string; plan: ExecPlan; ctx?: Record<string, any> }
-export type ExecOut = { trace: any[]; result: any; threadId: string }
+import { ExecIn, ExecOut } from "./types"
 
 async function withTimeout<T>(p: Promise<T>, ms: number, label: string): Promise<T> {
   if (!ms || ms <= 0) return p

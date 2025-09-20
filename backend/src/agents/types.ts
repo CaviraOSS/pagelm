@@ -54,16 +54,7 @@ export type Turn = {
   ctx: Ctx
 }
 
-export type ExecIn = {
-  agent: string
-  input: string
-  ctx?: Ctx
-  plan?: Plan
-  threadId?: string
-}
-
-export type ExecOut = {
-  trace: any[]
-  result: any
-  threadId: string
-}
+export type ExecStep = { tool: string; input?: any; timeoutMs?: number; retries?: number }
+export type ExecPlan = { steps: ExecStep[] }
+export type ExecIn = { agent: string; plan: ExecPlan; ctx?: Record<string, any> }
+export type ExecOut = { trace: any[]; result: any; threadId: string }

@@ -1,5 +1,5 @@
 import crypto from "crypto"
-import { emitToAll } from "../../utils/chat/ws"
+import { emitToAll, emitLarge } from "../../utils/chat/ws"
 import { withTimeout } from "../../utils/quiz/promise"
 import { handleExam } from "../../services/examlab/generate"
 import { loadAllExams } from "../../services/examlab/loader"
@@ -22,7 +22,7 @@ export function examRoutes(app: any) {
     s.add(ws)
 
     log("ws open", runId, "clients:", s.size)
-    ws.send(JSON.stringify({ type: "ready", runId }))
+    try { ws.send(JSON.stringify({ type: "ready", runId })) } catch { }
 
     ws.on("error", (e: any) => log("ws err", runId, e?.message || e))
     ws.on("close", () => {
@@ -32,7 +32,7 @@ export function examRoutes(app: any) {
     })
 
     const iv = setInterval(() => {
-      try { if (ws.readyState === 1) ws.send(JSON.stringify({ type: "ping", t: Date.now() })) } catch {}
+      try { if (ws.readyState === 1) ws.send(JSON.stringify({ type: "ping", t: Date.now() })) } catch { }
     }, 15000)
     ws.on("close", () => clearInterval(iv))
   })
@@ -70,7 +70,7 @@ export function examRoutes(app: any) {
         try {
           emitToAll(s, { type: "phase", value: "generating", examId })
           const payload = await withTimeout(handleExam(examId), 180000, "handleExam")
-          emitToAll(s, { type: "exam", examId, payload })
+          await emitLarge(s, "exam", { examId, payload }, { id: runId, chunkBytes: 128 * 1024, gzip: false })
           emitToAll(s, { type: "done" })
           log("single done", runId, examId)
         } catch (e: any) {
@@ -102,7 +102,7 @@ export function examRoutes(app: any) {
             try {
               emitToAll(s, { type: "phase", value: "generating", examId: ex.id })
               const payload = await withTimeout(handleExam(ex.id), 180000, `handleExam:${ex.id}`)
-              emitToAll(s, { type: "exam", examId: ex.id, payload })
+              await emitLarge(s, "exam", { examId: ex.id, payload }, { id: runId, chunkBytes: 128 * 1024, gzip: false })
             } catch (e: any) {
               log("batch item err", ex.id, e?.message || e)
               emitToAll(s, { type: "error", examId: ex.id, error: e?.message || "failed" })
