@@ -24,7 +24,7 @@
     "cors": "^2.8.5",
     "docxtemplater": "^3.66.3",
     "edge-tts": "^1.0.1",
-    "keyv": "^5.5.1",
+    "keyv": "^5.5.2",
     "langchain": "^0.3.34",
     "mammoth": "^1.10.0",
     "marked": "^16.3.0",
