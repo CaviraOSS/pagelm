@@ -113,7 +113,7 @@ export default function PromptRail({ onSend }: { onSend?: (prompt: string) => vo
         type="button"
         onClick={sendNow}
         disabled={busy}
-        className="ml-1 h-full w-fit px-3 flex items-center justify-center bg-stone-900/50 border border-stone-900 border-l-0 rounded-r-2xl relative z-10 pointer-events-auto"
+        className="h-full w-fit px-3 flex items-center justify-center bg-stone-900/50 border border-stone-900 border-l-0 rounded-r-2xl relative z-10 pointer-events-auto"
         aria-label="Send suggested prompt"
         title={busy ? "Starting..." : "Send"}
       >
