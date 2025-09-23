@@ -8,7 +8,7 @@ type Props = {
 export default function FlashCards({ items = [], onAdd }: Props) {
   return (
     <div className="w-1/4 border-l border-zinc-900 pl-6 hidden lg:block">
-      <div className="sticky top-24 h-[calc(100vh-6rem)] flex flex-col">
+      <div className="sticky top-4 h-[calc(100vh-6rem)] flex flex-col">
         <div className="mb-5">
           <div className="rounded-2xl bg-zinc-950/80 border border-zinc-900 px-4 py-3 flex items-center justify-between">
             <h3 className="text-zinc-100 font-semibold tracking-wide">Important Topics</h3>
@@ -16,7 +16,7 @@ export default function FlashCards({ items = [], onAdd }: Props) {
           </div>
         </div>
 
-        <div className="flex-1 overflow-y-auto pr-1 custom-scroll space-y-4">
+        <div className="flex-1 overflow-y-auto pr-1 custom-scroll space-y-4 mb-8">
           {items.length === 0 ? (
             <div className="text-zinc-400 text-sm bg-zinc-950/60 border border-zinc-900 rounded-2xl p-6 text-center">
               No flashcards yet

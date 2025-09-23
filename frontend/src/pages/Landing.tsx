@@ -68,7 +68,7 @@ export default function Landing() {
       </header>
 
       <div className="flex-1 flex flex-col justify-center max-w-4xl mx-auto my-20 md:my-4 w-full px-2">
-        <h1 className="text-2xl sm:text-3xl lg:text-4xl text-white font-semibold pl-3 border-l-2 border-sky-500 mb-6">
+        <h1 className="text-2xl sm:text-3xl lg:text-4xl text-white font-semibold pl-3 border-l-2 border-sky-500 mb-8">
           What&apos;d you like to learn today?
         </h1>
 
@@ -90,9 +90,9 @@ export default function Landing() {
               <div className="relative">
                 <div
                   onClick={() => setShowMode(!showMode)}
-                  className="flex items-center space-x-4 p-1.5 rounded-xl hover:bg-white/5 duration-300 transition-all cursor-pointer"
+                  className="flex items-center space-x-4 p-1 rounded-xl hover:bg-white/5 duration-300 transition-all cursor-pointer"
                 >
-                  <div className="flex flex-col -space-y-0.5 pr-2">
+                  <div className="flex flex-col p-1">
                     <span className="text-xs text-stone-300">Prompt Mode</span>
                     <span className="text-sm font-semibold text-white">{mode}</span>
                   </div>
@@ -102,7 +102,7 @@ export default function Landing() {
                 </div>
 
                 {showMode && (
-                  <div className="absolute top-full left-0 mt-1 w-40 bg-stone-950 border border-stone-800 rounded-xl shadow-lg z-20">
+                  <div className="absolute top-full left-0 p-1 mt-1 w-36 bg-stone-950 border border-stone-800 rounded-xl shadow-lg z-20">
                     {["Chat", "Quiz"].map((opt) => (
                       <div
                         key={opt}
@@ -110,7 +110,7 @@ export default function Landing() {
                           setMode(opt as "Chat" | "Quiz");
                           setShowMode(false);
                         }}
-                        className={`px-3 py-2 cursor-pointer hover:bg-stone-800 transition ${mode === opt ? "text-sky-400" : "text-white"
+                        className={`px-3 py-2 cursor-pointer hover:bg-stone-800 transition rounded-lg ${mode === opt ? "text-sky-400" : "text-white"
                           }`}
                       >
                         {opt}
@@ -153,7 +153,7 @@ export default function Landing() {
                 </div>
 
                 {showLength && (
-                  <div className="absolute top-full left-0 mt-1 w-40 bg-stone-950 border border-stone-800 rounded-xl shadow-lg z-20">
+                  <div className="absolute top-full left-0 mt-1 p-1 w-40 bg-stone-950 border border-stone-800 rounded-xl shadow-lg z-20">
                     {["Short", "Medium", "Long"].map((opt) => (
                       <div
                         key={opt}
@@ -161,7 +161,7 @@ export default function Landing() {
                           setResponseLength(opt as "Short" | "Medium" | "Long");
                           setShowLength(false);
                         }}
-                        className={`px-3 py-2 cursor-pointer hover:bg-stone-800 transition ${responseLength === opt ? "text-sky-400" : "text-white"
+                        className={`px-3 py-2 cursor-pointer hover:bg-stone-800 transition rounded-lg ${responseLength === opt ? "text-sky-400" : "text-white"
                           }`}
                       >
                         {opt}

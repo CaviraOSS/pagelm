@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from "react";
-import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
+import { useLocation, useNavigate, useSearchParams, Link } from "react-router-dom";
 import { quizStart, connectQuizStream, type QuizEvent } from "../lib/api";
 import LoadingIndicator from "../components/Chat/LoadingIndicator";
 import TopicBar from "../components/Quiz/TopicBar";
@@ -130,6 +130,22 @@ export default function Quiz() {
   return (
     <div className="flex flex-col min-h-screen w-full px-4 lg:pl-28 lg:pr-4">
       <div className="w-full max-w-4xl mx-auto p-4 pt-8 pb-24 my-auto">
+
+        <div className="flex items-center justify-between mb-6">
+          <div className="flex items-center gap-3">
+            <Link to='/'
+              className="p-2 rounded-xl bg-zinc-950 border border-zinc-800 hover:bg-zinc-900 transition-colors"
+              aria-label="Back">
+              <svg viewBox="0 0 24 24" className="size-5 text-zinc-300" fill="none" stroke="currentColor" strokeWidth="1.5">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 19.5 8.25 12l7.5-7.5" />
+              </svg>
+            </Link>
+            <h1 className="text-2xl font-semibold text-white flex items-center gap-3">Quiz</h1>
+          </div>
+          <div className="px-3 py-1 rounded-full bg-gradient-to-r from-sky-500/20 to-blue-500/20 border border-sky-500/30 text-sky-300 text-xs font-medium">
+            BETA
+          </div>
+        </div>
 
         {qs.length === 0 && !connecting && !done && (
           <TopicBar

@@ -1,5 +1,55 @@
 @import "tailwindcss";
 
+body {
+  font-family: 'Schibsted Grotesk', sans-serif;
+}
+
+.custom-scroll {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(82, 82, 91, 0.9) rgba(24, 24, 27, 0.7);
+}
+
+.custom-scroll::-webkit-scrollbar {
+  width: 10px;
+}
+
+.custom-scroll::-webkit-scrollbar-track {
+  background: rgba(24, 24, 27, 0.7);
+  border-radius: 9999px;
+}
+
+.custom-scroll::-webkit-scrollbar-thumb {
+  background: rgba(82, 82, 91, 0.95);
+  border-radius: 9999px;
+  border: 2px solid rgba(24, 24, 27, 0.85);
+}
+
+.custom-scroll::-webkit-scrollbar-thumb:hover {
+  background: rgba(113, 113, 122, 1);
+}
+
+::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+    cursor: pointer;
+    background-color: rgb(47, 47, 47);
+    border-radius: 10px;
+    border: 2px solid transparent;
+    background-clip: content-box;
+}
+
+@font-face {
+  font-family: 'Schibsted Grotesk';
+  font-style: normal;
+  font-weight: 400 900;
+  font-display: swap;
+  src: url(/fonts/schibsted_grotesk.woff2) format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+
 /* Custom animations */
 @keyframes shimmer {
   100% {
@@ -12,6 +62,7 @@
     opacity: 0;
     transform: translateX(-20px);
   }
+
   to {
     opacity: 1;
     transform: translateX(0);
@@ -23,6 +74,7 @@
     opacity: 0;
     transform: translateX(20px);
   }
+
   to {
     opacity: 1;
     transform: translateX(0);
@@ -33,6 +85,7 @@
   from {
     opacity: 0;
   }
+
   to {
     opacity: 1;
   }
@@ -43,50 +96,9 @@
     opacity: 0;
     transform: scale(0.95);
   }
+
   to {
     opacity: 1;
     transform: scale(1);
   }
-}
-
-.custom-scroll {
-  scrollbar-width: thin;
-  scrollbar-color: rgba(82,82,91,0.9) rgba(24,24,27,0.7);
-}
-
-.custom-scroll::-webkit-scrollbar {
-  width: 10px;
-}
-
-.custom-scroll::-webkit-scrollbar-track {
-  background: rgba(24,24,27,0.7);
-  border-radius: 9999px;
-}
-
-.custom-scroll::-webkit-scrollbar-thumb {
-  background: rgba(82,82,91,0.95);
-  border-radius: 9999px;
-  border: 2px solid rgba(24,24,27,0.85);
-}
-
-.custom-scroll::-webkit-scrollbar-thumb:hover {
-  background: rgba(113,113,122,1);
-}
-
-::-webkit-scrollbar-thumb {
-  background-color: rgba(156, 163, 175);
-  border-radius: 3px;
-}
-
-::-webkit-scrollbar-track {
-  background-color: transparent;
-  content: "";
-  position: absolute;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 0;
-  background-image: inherit;
-  background-size: cover;
-  z-index: 0;
 }
