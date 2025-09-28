@@ -10,7 +10,7 @@
 </div>
 
 <p align="center">
-  <a href="LICENSE"><img src="https://img.shields.io/badge/License-CaviraOSS%20Community%20License-blueviolet.svg" alt="License: CaviraOSS Community License"></a>
+  <a href="LICENSE"><img src="https://img.shields.io/badge/License-NeuroPilot%20Community%20License-blueviolet.svg" alt="License: NeuroPilot Community License"></a>
   <a href="https://nodejs.org/"><img src="https://img.shields.io/badge/node-%3E%3D20.0.0-brightgreen.svg" alt="Node.js Version"></a>
   <a href="https://reactjs.org/"><img src="https://img.shields.io/badge/React-18+-blue.svg" alt="React"></a>
   <a href="https://www.typescriptlang.org/"><img src="https://img.shields.io/badge/TypeScript-5.0+-blue.svg" alt="TypeScript"></a>
