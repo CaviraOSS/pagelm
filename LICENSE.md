@@ -1,6 +1,6 @@
-# CaviraOSS Community License
+# NeuroPilot Community License
 
-**Copyright (c) 2025 Cavira OSS**
+**Copyright (c) 2025 NeuroPilot, nullure & recabasic**
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the “Software”), to use, copy, modify, and run the Software for **personal, educational, or non-commercial research purposes**.
 
