@@ -319,6 +319,100 @@ export async function transcribeAudio(file: File) {
   });
 }
 
+export type PlannerTask = {
+  id: string;
+  course?: string;
+  title: string;
+  type?: string;
+  notes?: string;
+  dueAt: number;
+  estMins: number;
+  priority: 1 | 2 | 3 | 4 | 5;
+  status: "todo" | "doing" | "done" | "blocked";
+  createdAt: number;
+  updatedAt: number;
+  tags?: string[];
+};
+
+export type PlannerSlot = { id: string; taskId: string; start: number; end: number; kind: "focus" | "review" | "buffer"; done?: boolean }
+export type WeeklyPlan = { days: { date: string; slots: PlannerSlot[] }[] }
+
+export type PlannerEvent =
+  | { type: "ready"; sid: string }
+  | { type: "phase"; value: string }
+  | { type: "plan.update"; taskId: string; slots: PlannerSlot[] }
+  | { type: "materials.chunk"; id: string; idx: number; total: number; more: boolean; encoding: string; data: string }
+  | { type: "materials.done"; id: string; total: number }
+  | { type: "reminder"; text: string; at: number }
+  | { type: "daily.digest"; date: string; due: { id: string; title: string; dueAt: number }[] }
+  | { type: "done" };
+
+export async function plannerIngest(text: string) {
+  return req<{ ok: boolean; task: PlannerTask }>(`${env.backend}/tasks/ingest`, {
+    method: "POST",
+    headers: jsonHeaders({}),
+    body: JSON.stringify({ text })
+  })
+}
+
+export async function plannerList(params?: { status?: string; dueBefore?: number; course?: string }) {
+  const q = new URLSearchParams()
+  if (params?.status) q.set("status", params.status)
+  if (params?.dueBefore) q.set("dueBefore", String(params.dueBefore))
+  if (params?.course) q.set("course", params.course)
+  const url = `${env.backend}/tasks${q.toString() ? `?${q}` : ""}`
+  return req<{ ok: boolean; tasks: PlannerTask[] }>(url, { method: "GET" })
+}
+
+export async function plannerPlan(id: string, cram?: boolean) {
+  return req<{ ok: boolean; task: PlannerTask & { plan?: { slots: PlannerSlot[] } } }>(`${env.backend}/tasks/${encodeURIComponent(id)}/plan`, {
+    method: "POST",
+    headers: jsonHeaders({}),
+    body: JSON.stringify({ cram: !!cram })
+  })
+}
+
+export async function plannerWeekly(cram?: boolean) {
+  return req<{ ok: boolean; plan: WeeklyPlan }>(`${env.backend}/planner/weekly`, {
+    method: "POST",
+    headers: jsonHeaders({}),
+    body: JSON.stringify({ cram: !!cram })
+  })
+}
+
+export async function plannerMaterials(id: string, kind: "summary" | "studyGuide" | "flashcards" | "quiz") {
+  return req<{ ok: boolean; data: any }>(`${env.backend}/tasks/${encodeURIComponent(id)}/materials`, {
+    method: "POST",
+    headers: jsonHeaders({}),
+    body: JSON.stringify({ kind })
+  })
+}
+
+export function connectPlannerStream(sid: string, onEvent: (ev: PlannerEvent) => void) {
+  const url = wsURL(`/ws/planner?sid=${encodeURIComponent(sid)}`)
+  const ws = new WebSocket(url)
+  ws.onmessage = (m) => {
+    try {
+      const ev = JSON.parse(m.data as string)
+      onEvent(ev)
+    } catch { }
+  }
+  ws.onerror = () => { /* ignore for now */ }
+  return { ws, close: () => { try { ws.close() } catch { } } }
+}
+
+export async function plannerUpdate(id: string, patch: Partial<PlannerTask>) {
+  return req<{ ok: boolean; task: PlannerTask }>(`${env.backend}/tasks/${encodeURIComponent(id)}`, {
+    method: "PATCH",
+    headers: jsonHeaders({}),
+    body: JSON.stringify(patch)
+  })
+}
+
+export async function plannerDelete(id: string) {
+  return req<{ ok: boolean }>(`${env.backend}/tasks/${encodeURIComponent(id)}`, { method: "DELETE" })
+}
+
 export function err(e: unknown) {
   return e instanceof Error ? e.message : String(e);
 }

@@ -106,42 +106,6 @@ export default function ComingSoon() {
             </div>
           </div>
         </div>
-
-        {/* Homework Planner */}
-        <div className="group rounded-2xl bg-zinc-950/50 border border-zinc-800 p-4 hover:border-lime-500/50 transition-all duration-300 hover:shadow-lg hover:shadow-lime-500/10 opacity-70 hover:opacity-90">
-          <div className="flex items-start justify-between gap-3">
-            <div className="flex-1">
-              <div className="flex items-center gap-2 mb-1">
-                <div className="text-xs uppercase tracking-wide text-lime-400 font-semibold">
-                  task manager
-                </div>
-              </div>
-              <div className="text-white font-semibold text-lg mb-2">
-                Smart Homework Planner
-              </div>
-              <div className="text-zinc-400 text-sm leading-relaxed">
-                AI-powered assignment tracking with priority scheduling and
-                deadline reminders.
-              </div>
-            </div>
-            <div className="p-3 rounded-xl bg-gradient-to-br from-lime-500/20 to-green-500/20 border border-lime-500/30">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="size-5 text-lime-400"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth="2"
-                  d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"
-                />
-              </svg>
-            </div>
-          </div>
-        </div>
       </div>
 
       <div className="mt-6 text-center">
