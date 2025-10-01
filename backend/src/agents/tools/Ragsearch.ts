@@ -10,7 +10,7 @@ export const Ragsearch: ToolIO = {
   schema: { type: "object", properties: { q: { type: "string" }, ns: { type: "string" }, k: { type: "number" } }, required: [] },
   run: async (input: any, ctx: Record<string, any>) => {
     const q = toStr(input?.q ?? ctx?.q ?? "").trim()
-    const ns = toStr(input?.ns ?? ctx?.ns ?? "neuropilot").trim() || "neuropilot"
+    const ns = toStr(input?.ns ?? ctx?.ns ?? "pagelm").trim() || "pagelm"
     const kNum = Number(input?.k ?? 6); const k = Number.isFinite(kNum) && kNum > 0 ? Math.min(kNum, 20) : 6
     if (!q) return [{ text: "" }]
     const retriever = await getRetriever(ns, embeddings)

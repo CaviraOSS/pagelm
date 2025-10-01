@@ -77,7 +77,7 @@ jobs:
         context: .
         file: ./backend/Dockerfile
         push: false
-        tags: neuropilot-backend:test
+  tags: pagelm-backend:test
         cache-from: type=gha
         cache-to: type=gha,mode=max
     
@@ -87,7 +87,7 @@ jobs:
         context: ./frontend
         file: ./frontend/Dockerfile
         push: false
-        tags: neuropilot-frontend:test
+  tags: pagelm-frontend:test
         cache-from: type=gha
         cache-to: type=gha,mode=max
 

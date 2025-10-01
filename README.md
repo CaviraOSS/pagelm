@@ -1,16 +1,16 @@
 <div align="center">
-<img width="full" height="auto" alt="neuropilot" src="https://github.com/user-attachments/assets/5f187cd5-078a-4a87-85ba-da218e81e252" />
+<img width="full" height="auto" alt="PageLM" src="https://github.com/user-attachments/assets/5f187cd5-078a-4a87-85ba-da218e81e252" />
 
-# NeuroPilot
+# PageLM
 
-**An open-source AI-powered education platform that transforms study materials into interactive learning resources**
+**The open source version of NotebookLM, an education platform that transforms study materials into interactive learning experiences**
 
-[Report Bug](https://github.com/caviraOSS/neuropilot/issues) • [Request Feature](https://github.com/caviraOSS/neuropilot/issues) • [Discord server](https://discord.gg/P7HaRayqTh)
+[Report Bug](https://github.com/caviraOSS/pagelm/issues) • [Request Feature](https://github.com/caviraOSS/pagelm/issues) • [Discord server](https://discord.gg/P7HaRayqTh)
 
 </div>
 
 <p align="center">
-  <a href="LICENSE"><img src="https://img.shields.io/badge/License-NeuroPilot%20Community%20License-blueviolet.svg" alt="License: NeuroPilot Community License"></a>
+  <a href="LICENSE"><img src="https://img.shields.io/badge/License-PageLM%20Community%20License-blueviolet.svg" alt="License: PageLM Community License"></a>
   <a href="https://nodejs.org/"><img src="https://img.shields.io/badge/node-%3E%3D20.0.0-brightgreen.svg" alt="Node.js Version"></a>
   <a href="https://reactjs.org/"><img src="https://img.shields.io/badge/React-18+-blue.svg" alt="React"></a>
   <a href="https://www.typescriptlang.org/"><img src="https://img.shields.io/badge/TypeScript-5.0+-blue.svg" alt="TypeScript"></a>
@@ -21,7 +21,7 @@
 
 ## Demo
 
-<img src=".github/neuropilot.png" alt="NeuroPilot Demo"/>
+<img src=".github/pagelm.png" alt="PageLM Demo"/>
 
 https://github.com/user-attachments/assets/98fae4ef-c2b7-4ad2-bfe9-1e0665eb4d71
 
@@ -36,7 +36,7 @@ https://github.com/user-attachments/assets/98fae4ef-c2b7-4ad2-bfe9-1e0665eb4d71
 
 ## 🚀 Features
 
-NeuroPilot converts study material into **interactive resources** including quizzes, flashcards, structured notes, and podcasts.  
+PageLM converts study material into **interactive resources** including quizzes, flashcards, structured notes, and podcasts.  
 The platform provides a modern interface for students, educators, and researchers to **enhance learning efficiency** using state-of-the-art LLMs and TTS systems.
 
 ### Learning Tools
@@ -47,6 +47,7 @@ The platform provides a modern interface for students, educators, and researcher
 - **Quizzes** – Create interactive quizzes with hints, explanations, and scoring
 - **AI Podcast** – Convert notes and topics into engaging audio content for learning on the go
 - **Voice Transcribe** - Convert lecture recordings and voice notes into organized, searchable study materials instantly.
+- **Homework Planner** - Plans your Homework Smartly using AI, Assists if your stuck.
 - **ExamLab** - Simulate any exam, get feedback, and be prepared for the exam
 
 ### Supported AI Models
@@ -94,8 +95,8 @@ The platform provides a modern interface for students, educators, and researcher
 
 ```bash
 # Clone the repository
-git clone https://github.com/caviraOSS/neuropilot.git
-cd neuropilot
+git clone https://github.com/caviraOSS/pagelm.git
+cd pagelm
 
 # Linux:
   chmod 777 ./setup.sh
@@ -195,7 +196,7 @@ We welcome all contributions.
 
 ## 💖 Support the Project
 
-If you find NeuroPilot useful, please consider supporting:
+If you find PageLM useful, please consider supporting:
 
 **Ethereum (ERC-20)**:
 
@@ -221,6 +222,6 @@ See [LICENSE](LICENSE.md) for full terms.
 
 **Built with ❤️ by CaviraOSS and contributors**
 
-⭐ Star us on [GitHub](https://github.com/CaviraOSS/neuropilot) if this project helps you!
+⭐ Star us on [GitHub](https://github.com/CaviraOSS/pagelm) if this project helps you!
 
 </div>

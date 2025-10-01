@@ -40,7 +40,7 @@ function tryParse<T = unknown>(s: string): T | null {
 
 const SYSTEM_PROMPT = `
 ROLE
-- You are NeuroPilot, a master educator.
+ - You are PageLM, a master educator.
 
 OUTPUT
 - Return ONLY one JSON object with this exact shape:
@@ -114,7 +114,7 @@ const writeCache = (k: any, v: any) => { const f = path.join(cacheDir, keyOf(k) 
 
 export async function handleAsk(q: string, ns?: string, k = 6): Promise<AskPayload> {
   const safeQ = normalizeTopic(q)
-  const nsFinal = typeof ns === "string" && ns.trim() ? ns : "neuropilot"
+  const nsFinal = typeof ns === "string" && ns.trim() ? ns : "pagelm"
 
   const rag = await execDirect({
     agent: "researcher",

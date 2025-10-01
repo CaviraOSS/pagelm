@@ -1,11 +1,11 @@
 blank_issues_enabled: false
 contact_links:
   - name: 💬 Discussions
-    url: https://github.com/CaviraOSS/neuropilot/discussions
+  url: https://github.com/CaviraOSS/pagelm/discussions
     about: Ask questions and discuss ideas with the community
   - name: 📖 Documentation
-    url: https://github.com/CaviraOSS/neuropilot/wiki
+  url: https://github.com/CaviraOSS/pagelm/wiki
     about: Check out the project documentation
   - name: 🔒 Security Issue
-    url: https://github.com/CaviraOSS/neuropilot/security/advisories/new
+  url: https://github.com/CaviraOSS/pagelm/security/advisories/new
     about: Report a security vulnerability privately

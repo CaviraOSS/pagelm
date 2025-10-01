@@ -45,7 +45,7 @@ export function parseMultipart(req: any): Promise<{ q: string; chatId?: string; 
 export async function handleUpload(a: { filePath: string; filename?: string; contentType?: string; namespace?: string }): Promise<{ stored: string }> {
   const fp = a.filePath
   const mime = a.contentType || ''
-  const ns = a.namespace || 'neuropilot'
+  const ns = a.namespace || 'pagelm'
   const txt = await extractText(fp, mime)
   if (!txt?.trim()) throw new Error('No valid content extracted from file.')
   const out = `${fp}.txt`

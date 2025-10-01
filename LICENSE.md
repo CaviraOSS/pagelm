@@ -1,4 +1,4 @@
-# NeuroPilot Community License
+# PageLM Community License
 
 **Copyright (c) 2025 nullure & recabasic**
 
