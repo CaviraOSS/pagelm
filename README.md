@@ -1,6 +1,6 @@
 <div align="center">
   
-<img width="full" height="auto" alt="pagellm" src="https://github.com/user-attachments/assets/9b38b97b-3147-442e-a23f-68fa8f4544f8" />
+<img width="full" height="auto" alt="pagelm" src="https://github.com/user-attachments/assets/d3133be1-1931-4132-9301-3596ebb21122" />
 
 # PageLM
 
