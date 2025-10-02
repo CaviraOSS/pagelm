@@ -102,15 +102,16 @@ export function chatRoutes(app: any) {
             value: "generating",
           });
 
-          const tAsk = Date.now();
           let answer: string = "";
+
+          const msgHistory = await getMsgs(id);
+
           try {
-            answer = await (handleAsk as any)({ q, namespace: ns });
+            answer = await (handleAsk as any)({ q, namespace: ns, history: msgHistory });
           } catch {
-            answer = await (handleAsk as any)(q, ns);
+            answer = await (handleAsk as any)(q, ns, undefined, msgHistory);
           }
 
-          const tAsst = Date.now();
           await addMsg(id, {
             role: "assistant",
             content: answer,

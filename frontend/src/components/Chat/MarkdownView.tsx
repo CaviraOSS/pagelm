@@ -48,7 +48,7 @@ const components: Components = {
 
 export default function MarkdownView({ md }: Props) {
   return (
-    <div className="max-w-none leading-relaxed text-zinc-200">
+    <div className="prose prose-invert max-w-3xl leading-relaxed text-zinc-200">
       <ReactMarkdown
         skipHtml
         remarkPlugins={[remarkGfm, remarkBreaks, remarkMath]}

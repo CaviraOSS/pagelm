@@ -35,7 +35,7 @@ export default function Planner() {
     const [plan, setPlan] = useState<WeeklyPlan | null>(null)
     const [materials, setMaterials] = useState<Record<string, any>>({})
     const wsRef = useRef<ReturnType<typeof connectPlannerStream> | null>(null)
-    const [view, setView] = useState<"list" | "mindmap">("mindmap")
+    const [view, setView] = useState<"list" | "mindmap">("list")
 
     const taskIndex = useMemo(() => Object.fromEntries(tasks.map(t => [t.id, t])), [tasks])
     const slotsByTask = useMemo(() => {

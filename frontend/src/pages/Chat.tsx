@@ -274,7 +274,7 @@ export default function Chat() {
 
   return (
     <div className="flex flex-col min-h-screen w-full px-4 lg:pl-28 lg:pr-4">
-      <div className="flex mt-20 lg:mt-16 mb-16">
+      <div className="grid grid-cols-1 lg:grid-cols-[1fr_320px] gap-8 mt-20 lg:mt-16 mb-16">
         <div className="flex-1 pr-6">
           <div className="w-full max-w-5xl mx-auto p-4 pt-2 pb-28">
             <div className="space-y-6">
@@ -301,7 +301,7 @@ export default function Chat() {
               })}
               {(connecting || awaitingAnswer) && (
                 <div className="w-full flex justify-start">
-                    <LoadingIndicator label={connecting ? "Connecting…" : "Thinking…"} />
+                  <LoadingIndicator label={connecting ? "Connecting…" : "Thinking…"} />
                 </div>
               )}
               <div ref={scrollRef} />
