@@ -107,8 +107,17 @@ export function chatRoutes(app: any) {
           const msgHistory = await getMsgs(id);
 
           try {
-            answer = await (handleAsk as any)({ q, namespace: ns, history: msgHistory });
-          } catch {
+            console.log(`[chat] Retrieved ${msgHistory.length} messages for chat history`);
+            
+            // Only use previous messages, not the current message
+            const relevantHistory = msgHistory.filter(msg => 
+              !(msg.role === "user" && msg.content === q && Date.now() - msg.at < 60000)
+            );
+            
+            console.log(`[chat] Sending ${relevantHistory.length} messages as chat history`);
+            answer = await (handleAsk as any)({ q, namespace: ns, history: relevantHistory });
+          } catch (err) {
+            console.error('[chat] Error using object params:', err);
             answer = await (handleAsk as any)(q, ns, undefined, msgHistory);
           }
 

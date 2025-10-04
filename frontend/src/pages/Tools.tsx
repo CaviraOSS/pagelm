@@ -7,7 +7,7 @@ import ComingSoon from "../components/Tools/ComingSoon"
 export default function Tools() {
   return (
     <div className="min-h-screen w-full px-4 lg:pl-28 lg:pr-4">
-      <div className="max-w-5xl mx-auto pt-10 pb-14">
+      <div className="max-w-6xl mx-auto pt-6 px-4 pb-14">
         <div className="flex items-center justify-between mb-6">
           <div className="flex items-center gap-3">
             <Link

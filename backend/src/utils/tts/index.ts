@@ -1,6 +1,7 @@
 import fs from 'fs'
 import path from 'path'
 import { spawn } from 'child_process'
+import { EdgeTTS } from 'node-edge-tts'
 import { config } from '../../config/env'
 
 export type TSeg = { text: string; voice?: string }
@@ -28,18 +29,20 @@ async function synth_edge(segs: TSeg[], dir: string, base: string, emit?: (m: an
   const v0 = config.tts_voice_edge || 'en-US-AvaNeural'
   const v1 = config.tts_voice_alt_edge || 'en-US-AndrewNeural'
   const files: string[] = []
-  const bin = edgeBinPath()
 
   for (let i = 0; i < segs.length; i++) {
     const s = segs[i]
     const v = s.voice || (i % 2 ? v1 : v0)
     const f = path.join(dir, `${base}.${i}.mp3`)
-    await new Promise<void>((resolve, reject) => {
-      const args = ['--text', s.text, '--voice', v, '--write-media', f]
-      const p = spawn(bin, args, { stdio: 'pipe' })
-      p.stderr.on('data', d => emit && emit({ type: 'edge', data: String(d) }))
-      p.on('close', c => (c === 0 ? resolve() : reject(new Error('edge_tts_failed'))))
+    
+    const tts = new EdgeTTS({
+      voice: v,
+      lang: v.split('-').slice(0, 2).join('-'),
+      outputFormat: 'audio-24khz-96kbitrate-mono-mp3',
+      timeout: 10000
     })
+    
+    await tts.ttsPromise(s.text, f)
     files.push(f)
     emit && emit({ type: 'audio_progress', i, len: segs.length })
   }
