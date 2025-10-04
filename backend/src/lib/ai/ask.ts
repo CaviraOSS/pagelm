@@ -260,11 +260,6 @@ export async function handleAsk(q: string | { q: string; namespace?: string; his
     history.slice(-4).map(m => `${m.role}:${typeof m.content === 'string' ? m.content.slice(0, 100) : ''}`) :
     [];
 
-  console.log(`[handleAsk] History received: ${history ? history.length : 0} messages`);
-  if (history && history.length > 0) {
-    console.log(`[handleAsk] First message role: ${history[0].role}, Last message role: ${history[history.length - 1].role}`);
-  }
-
   const ck = { t: "ans", q: safeQ, ctx, topic, hist: historyContext }
   const cached = readCache(ck)
   if (cached) return cached
@@ -274,20 +269,17 @@ export async function handleAsk(q: string | { q: string; namespace?: string; his
   ];
 
   if (history && Array.isArray(history) && history.length > 1) {
-    console.log(`[handleAsk] Processing ${history.length} messages for conversation context`);
     const recentHistory = history.slice(-6);
     for (const msg of recentHistory) {
       if (msg.role === "user" || msg.role === "assistant") {
         const content = typeof msg.content === "string" ? msg.content :
           (msg.content?.answer || JSON.stringify(msg.content));
-        console.log(`[handleAsk] Adding ${msg.role} message: ${content.substring(0, 50)}...`);
         conversationMessages.push({
           role: msg.role,
           content: content
         });
       }
     }
-    console.log(`[handleAsk] Added ${conversationMessages.length - 1} messages to conversation context`);
   }
 
   conversationMessages.push({

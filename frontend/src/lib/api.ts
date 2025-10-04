@@ -31,7 +31,7 @@ export type PodcastEvent =
   | { type: "file"; filename: string; mime: string }
   | { type: "warn"; message: string }
   | { type: "script"; data: any }
-  | { type: "audio"; file: string }
+  | { type: "audio"; file: string; filename?: string; staticUrl?: string }
   | { type: "done" }
   | { type: "error"; error: string }
 export type SmartNotesEvent =
@@ -279,24 +279,38 @@ export async function quizStart(topic: string) {
 }
 
 export async function podcastStart(payload: { topic: string }) {
-  const res = await fetch(`${env.backend}/podcast`, {
+  const url = `${env.backend}/podcast`
+  const res = await fetch(url, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ topic: payload.topic }),
+    body: JSON.stringify(payload),
   })
-  if (!res.ok) throw new Error(`Failed to start podcast: ${res.statusText}`)
-  return res.json()
+  const data = await res.json()
+  if (!res.ok) throw new Error(data.error || "Failed to start podcast")
+  return data
 }
 
 export function connectPodcastStream(pid: string, onEvent: (ev: any) => void) {
-  const ws = new WebSocket(`${window.location.origin.replace(/^http/, "ws")}/ws/podcast?pid=${pid}`)
+  const wsUrl = `${env.backend.replace(/^http/, "ws")}/ws/podcast?pid=${pid}`
+  const ws = new WebSocket(wsUrl)
+  
+  ws.onopen = () => {
+  }
+  
   ws.onmessage = (e) => {
     try {
       const msg = JSON.parse(e.data)
       onEvent(msg)
-    } catch { }
+    } catch (err) {
+      onEvent({ type: "error", error: "invalid_message" })
+    }
   }
-  return { close: () => ws.close() }
+  
+  ws.onclose = (e) => {
+  }
+  
+  ws.onerror = () => onEvent({ type: "error", error: "stream_error" } as any)
+  return { ws, close: () => { try { ws.close() } catch { } } }
 }
 
 export function connectQuizStream(quizId: string, onEvent: (ev: QuizEvent) => void) {
