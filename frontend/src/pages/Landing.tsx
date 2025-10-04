@@ -68,10 +68,9 @@ export default function Landing() {
       </header>
 
       <div className="flex-1 flex flex-col justify-center max-w-4xl mx-auto my-20 md:my-4 w-full px-2">
-        <h1 className="text-2xl sm:text-3xl lg:text-4xl text-white font-semibold pl-3 border-l-2 border-sky-500 mb-2">
+        <h1 className="text-2xl sm:text-3xl lg:text-4xl text-white font-semibold pl-3 border-l-2 border-sky-500 mb-8">
           What&apos;d you like to learn today?
         </h1>
-        <div className="pl-3 text-stone-300 text-sm mb-6">OSS version of NotebookLM</div>
 
         <PromptBox
           value={prompt}

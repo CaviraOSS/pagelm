@@ -4,7 +4,7 @@
 
 # PageLM
 
-**The open source version of NotebookLM, an education platform that transforms study materials into interactive learning experiences**
+**An open source AI powered education platform that transforms study materials into interactive learning experiences, slightly inspired by NotebookLM**
 
 [Report Bug](https://github.com/caviraOSS/pagelm/issues) • [Request Feature](https://github.com/caviraOSS/pagelm/issues) • [Discord server](https://discord.gg/P7HaRayqTh)
 
