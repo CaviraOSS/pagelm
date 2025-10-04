@@ -409,7 +409,7 @@ export default function PlannerMindmap({ tasks, plan, onPlan, onAssist, onUpdate
             <div className="absolute top-3 left-3 z-20 text-[11px] text-zinc-400 bg-zinc-900/60 border border-zinc-800 rounded px-2 py-1 backdrop-blur">
                 Drag to pan, scroll to zoom, drag nodes to arrange. Double-click a node to focus.
             </div>
-            <svg className="absolute inset-0 w-full h-full" xmlns="http://www.w3.org/2000/svg">
+            <svg className="absolute inset-0 w-full h-full pointer-events-none" xmlns="http://www.w3.org/2000/svg">
                 {tasks.map(t => {
                     const p = positions[t.id]; if (!p) return null
                     const node = nodeRefs.current[t.id]
@@ -432,7 +432,7 @@ export default function PlannerMindmap({ tasks, plan, onPlan, onAssist, onUpdate
                                 const y1 = pan.y + ayWorld * zoom
                                 const x2 = pan.x + bxWorld * zoom
                                 const y2 = pan.y + byWorld * zoom
-                                return <line key={sid} x1={x1} y1={y1} x2={x2} y2={y2} stroke="#27272a" strokeWidth={1} />
+                                return <line key={sid} x1={x1} y1={y1} x2={x2} y2={y2} stroke="#27272a" strokeWidth={1.5} />
                             })}
                         </g>
                     )
@@ -530,86 +530,97 @@ export default function PlannerMindmap({ tasks, plan, onPlan, onAssist, onUpdate
                 const counts = stepCountsFor(t, labels.map(l => ({ label: l, w: 1 })))
                 return (
                     <div key={t.id} className="absolute select-none" data-node style={{ left: pan.x + p.x * zoom, top: pan.y + p.y * zoom }}>
-                        <div ref={el => { nodeRefs.current[t.id] = el }} style={{ transform: `scale(${zoom})`, transformOrigin: 'top left', position: 'relative' }}
-                            onDoubleClick={() => {
-                                const rect = wrapRef.current?.getBoundingClientRect()
-                                const cx = rect ? rect.width / 2 : 0
-                                const cy = rect ? rect.height / 2 : 0
-                                const node = nodeRefs.current[t.id]
-                                const w = (node?.offsetWidth ?? 140)
-                                const h = (node?.offsetHeight ?? 36)
-                                const worldX = positions[t.id].x + w / 2
-                                const worldY = positions[t.id].y + h / 2
-                                const newZoom = Math.min(MAX_ZOOM, Math.max(zoom, 1.5))
-                                const newPanX = cx - worldX * newZoom
-                                const newPanY = cy - worldY * newZoom
-                                setPan({ x: newPanX, y: newPanY })
-                                setZoom(newZoom)
-                            }}>
-                            <div className="pointer-events-none absolute -inset-2 opacity-35" style={{ background: `radial-gradient(22px 22px at 50% 65%, rgba(56,189,248,0.2), transparent 70%)` }} />
-                            <div onPointerDown={e => onDown(e, t.id)} className="cursor-grab active:cursor-grabbing rounded-full border bg-[#0b1220]/70 border-[#1f2937] pl-3 pr-1.5 py-1.5 shadow-[0_2px_8px_rgba(0,0,0,0.4)] backdrop-blur flex items-center gap-1.5">
-                                <div className="text-[12px] text-slate-200 whitespace-nowrap max-w-[260px] truncate">{t.title}</div>
-                                <button onClick={(e) => { e.stopPropagation(); setMenuOpen(menuOpen === t.id ? null : t.id) }} className="text-[12px] text-slate-300 hover:text-slate-100 px-1 rounded hover:bg-zinc-800">⋯</button>
+                        <div style={{ transform: `scale(${zoom})`, transformOrigin: 'top left', position: 'relative' }}>
+                            <div ref={el => { nodeRefs.current[t.id] = el }}
+                                onDoubleClick={() => {
+                                    const rect = wrapRef.current?.getBoundingClientRect()
+                                    const cx = rect ? rect.width / 2 : 0
+                                    const cy = rect ? rect.height / 2 : 0
+                                    const node = nodeRefs.current[t.id]
+                                    const w = (node?.offsetWidth ?? 140)
+                                    const h = (node?.offsetHeight ?? 36)
+                                    const worldX = positions[t.id].x + w / 2
+                                    const worldY = positions[t.id].y + h / 2
+                                    const newZoom = Math.min(MAX_ZOOM, Math.max(zoom, 1.5))
+                                    const newPanX = cx - worldX * newZoom
+                                    const newPanY = cy - worldY * newZoom
+                                    setPan({ x: newPanX, y: newPanY })
+                                    setZoom(newZoom)
+                                }}>
+                                <div className="pointer-events-none absolute -inset-2 opacity-35" style={{ background: `radial-gradient(22px 22px at 50% 65%, rgba(56,189,248,0.2), transparent 70%)` }} />
+                                <div onPointerDown={e => onDown(e, t.id)} className="cursor-grab active:cursor-grabbing rounded-full border bg-[#0b1220]/70 border-[#1f2937] pl-3 pr-1.5 py-1.5 shadow-[0_2px_8px_rgba(0,0,0,0.4)] backdrop-blur flex items-center gap-1.5">
+                                    <div className="text-[12px] text-slate-200 whitespace-nowrap max-w-[260px] truncate">{t.title}</div>
+                                    <button onClick={(e) => { e.stopPropagation(); setMenuOpen(menuOpen === t.id ? null : t.id) }} className="text-[12px] text-slate-300 hover:text-slate-100 px-1 rounded hover:bg-zinc-800">⋯</button>
+                                </div>
+                                {menuOpen === t.id && (
+                                    <div className="absolute left-0 top-[120%] z-30 bg-zinc-900/95 border border-zinc-800 rounded-md shadow-lg min-w-[160px] p-1">
+                                        <button onClick={() => { setMenuOpen(null); onUpdateStatus(t.id, 'doing'); onPlan(t.id); }} className="w-full text-left text-[12px] text-zinc-200 px-2 py-1 rounded hover:bg-zinc-800">Start now</button>
+                                        <button onClick={() => { setMenuOpen(null); onPlan(t.id) }} className="w-full text-left text-[12px] text-zinc-200 px-2 py-1 rounded hover:bg-zinc-800">Plan</button>
+                                        <div className="border-t border-zinc-800 my-1" />
+                                        <button onClick={() => { setMenuOpen(null); onAssist(t.id, 'summary') }} className="w-full text-left text-[12px] text-zinc-200 px-2 py-1 rounded hover:bg-zinc-800">Assist: Summary</button>
+                                        <button onClick={() => { setMenuOpen(null); onAssist(t.id, 'studyGuide') }} className="w-full text-left text-[12px] text-zinc-200 px-2 py-1 rounded hover:bg-zinc-800">Assist: Study Guide</button>
+                                        <button onClick={() => { setMenuOpen(null); onAssist(t.id, 'flashcards') }} className="w-full text-left text-[12px] text-zinc-200 px-2 py-1 rounded hover:bg-zinc-800">Assist: Flashcards</button>
+                                        <div className="border-t border-zinc-800 my-1" />
+                                        <label className="block text-[12px] text-zinc-200 px-2 py-1 rounded hover:bg-zinc-800 cursor-pointer">
+                                            Upload file
+                                            <input type="file" className="hidden" onChange={e => { const f = e.target.files?.[0]; if (f) onUpload(t.id, f); setMenuOpen(null) }} />
+                                        </label>
+                                        <button onClick={() => { const val = window.prompt('Add note'); if (val != null) { onUpdateNotes?.(t.id, val) } setMenuOpen(null) }} className="w-full text-left text-[12px] text-zinc-200 px-2 py-1 rounded hover:bg-zinc-800">Add note…</button>
+                                        <button onClick={() => { recenterSteps(t.id); setMenuOpen(null) }} className="w-full text-left text-[12px] text-zinc-200 px-2 py-1 rounded hover:bg-zinc-800">Recenter steps</button>
+                                        <div className="border-t border-zinc-800 my-1" />
+                                        <button onClick={() => { setMenuOpen(null); onDelete(t.id) }} className="w-full text-left text-[12px] text-red-400 px-2 py-1 rounded hover:bg-red-950/40">Delete task</button>
+                                    </div>
+                                )}
                             </div>
-                            {menuOpen === t.id && (
-                                <div className="absolute left-0 top-[120%] z-30 bg-zinc-900/95 border border-zinc-800 rounded-md shadow-lg min-w-[160px] p-1">
-                                    <button onClick={() => { setMenuOpen(null); onUpdateStatus(t.id, 'doing'); onPlan(t.id); }} className="w-full text-left text-[12px] text-zinc-200 px-2 py-1 rounded hover:bg-zinc-800">Start now</button>
-                                    <button onClick={() => { setMenuOpen(null); onPlan(t.id) }} className="w-full text-left text-[12px] text-zinc-200 px-2 py-1 rounded hover:bg-zinc-800">Plan</button>
-                                    <div className="border-t border-zinc-800 my-1" />
-                                    <button onClick={() => { setMenuOpen(null); onAssist(t.id, 'summary') }} className="w-full text-left text-[12px] text-zinc-200 px-2 py-1 rounded hover:bg-zinc-800">Assist: Summary</button>
-                                    <button onClick={() => { setMenuOpen(null); onAssist(t.id, 'studyGuide') }} className="w-full text-left text-[12px] text-zinc-200 px-2 py-1 rounded hover:bg-zinc-800">Assist: Study Guide</button>
-                                    <button onClick={() => { setMenuOpen(null); onAssist(t.id, 'flashcards') }} className="w-full text-left text-[12px] text-zinc-200 px-2 py-1 rounded hover:bg-zinc-800">Assist: Flashcards</button>
-                                    <div className="border-t border-zinc-800 my-1" />
-                                    <label className="block text-[12px] text-zinc-200 px-2 py-1 rounded hover:bg-zinc-800 cursor-pointer">
-                                        Upload file
-                                        <input type="file" className="hidden" onChange={e => { const f = e.target.files?.[0]; if (f) onUpload(t.id, f); setMenuOpen(null) }} />
-                                    </label>
-                                    <button onClick={() => { const val = window.prompt('Add note'); if (val != null) { onUpdateNotes?.(t.id, val) } setMenuOpen(null) }} className="w-full text-left text-[12px] text-zinc-200 px-2 py-1 rounded hover:bg-zinc-800">Add note…</button>
-                                    <button onClick={() => { recenterSteps(t.id); setMenuOpen(null) }} className="w-full text-left text-[12px] text-zinc-200 px-2 py-1 rounded hover:bg-zinc-800">Recenter steps</button>
-                                    <div className="border-t border-zinc-800 my-1" />
-                                    <button onClick={() => { setMenuOpen(null); onDelete(t.id) }} className="w-full text-left text-[12px] text-red-400 px-2 py-1 rounded hover:bg-red-950/40">Delete task</button>
-                                </div>
-                            )}
-                        </div>
-                        {labels.map((label) => {
-                            const sid = `${t.id}::${label}`
-                            const sp = stepPos[sid]
-                            const left = sp ? pan.x + sp.x * zoom : pan.x
-                            const top = sp ? pan.y + sp.y * zoom : pan.y
-                            const cnt = counts[label] || 0
-                            const glow = 'radial-gradient(18px 18px at 50% 60%, rgba(125,211,252,0.12), rgba(0,0,0,0) 70%)'
-                            return (
-                                <div key={sid} className="absolute rounded-full border border-zinc-800 bg-zinc-950/80 text-center text-zinc-300 cursor-grab active:cursor-grabbing"
-                                    onPointerDown={e => {
-                                        const rect = wrapRef.current?.getBoundingClientRect()
-                                        const localX = rect ? e.clientX - rect.left : e.clientX
-                                        const localY = rect ? e.clientY - rect.top : e.clientY
-                                        setDragStep({ id: sid, off: { x: localX - left, y: localY - top } })
-                                    }}
-                                    style={{ left, top, width: 84 * zoom, height: 28 * zoom, lineHeight: `${28 * zoom}px`, fontSize: `${11 * zoom}px` }}>
-                                    <div className="pointer-events-none absolute -inset-2" style={{ background: glow }} />
-                                    <button
-                                        onClick={(e) => {
-                                            e.stopPropagation()
-                                            setAiSteps(s => {
-                                                const labels = (s[t.id] && Array.isArray(s[t.id])) ? s[t.id].slice() : (aiSteps[t.id]?.slice() || inferSteps(t).map(x => x.label))
-                                                const nextLabels = labels.filter(l => l !== label)
-                                                const next = { ...s, [t.id]: nextLabels }
-                                                try { localStorage.setItem(`planner.aiSteps.${t.id}`, JSON.stringify(nextLabels)) } catch { }
-                                                return next
-                                            })
-                                            setStepPos(sp => {
-                                                const nn = { ...sp }; delete nn[sid]; return nn
-                                            })
+                            {labels.map((label) => {
+                                const sid = `${t.id}::${label}`
+                                const sp = stepPos[sid]
+                                if (!sp) return null
+                                const cnt = counts[label] || 0
+                                const glow = 'radial-gradient(18px 18px at 50% 60%, rgba(125,211,252,0.12), rgba(0,0,0,0) 70%)'
+                                const relX = sp.x - p.x
+                                const relY = sp.y - p.y
+                                return (
+                                    <div key={sid} className="absolute rounded-full border border-zinc-800 bg-zinc-950/80 text-center text-zinc-300 cursor-grab active:cursor-grabbing"
+                                        onPointerDown={e => {
+                                            const rect = wrapRef.current?.getBoundingClientRect()
+                                            const localX = rect ? e.clientX - rect.left : e.clientX
+                                            const localY = rect ? e.clientY - rect.top : e.clientY
+                                            const screenX = pan.x + sp.x * zoom
+                                            const screenY = pan.y + sp.y * zoom
+                                            setDragStep({ id: sid, off: { x: localX - screenX, y: localY - screenY } })
                                         }}
-                                        className="absolute -top-2 -right-2 w-6 h-6 rounded-full bg-zinc-800 text-zinc-100 hover:bg-red-600 hover:text-white flex items-center justify-center z-20"
-                                        style={{ transform: `scale(${Math.max(0.8, Math.min(1.2, zoom))})` }}
-                                        aria-label="Delete bubble"
-                                    >×</button>
-                                    <span className="relative px-2">{label}{cnt ? ` (${cnt})` : ''}</span>
-                                </div>
-                            )
-                        })}
+                                        style={{ 
+                                            left: relX, 
+                                            top: relY, 
+                                            width: 84, 
+                                            height: 28, 
+                                            lineHeight: '28px', 
+                                            fontSize: '11px'
+                                        }}>
+                                        <div className="pointer-events-none absolute -inset-2" style={{ background: glow }} />
+                                        <button
+                                            onClick={(e) => {
+                                                e.stopPropagation()
+                                                setAiSteps(s => {
+                                                    const labels = (s[t.id] && Array.isArray(s[t.id])) ? s[t.id].slice() : (aiSteps[t.id]?.slice() || inferSteps(t).map(x => x.label))
+                                                    const nextLabels = labels.filter(l => l !== label)
+                                                    const next = { ...s, [t.id]: nextLabels }
+                                                    try { localStorage.setItem(`planner.aiSteps.${t.id}`, JSON.stringify(nextLabels)) } catch { }
+                                                    return next
+                                                })
+                                                setStepPos(sp => {
+                                                    const nn = { ...sp }; delete nn[sid]; return nn
+                                                })
+                                            }}
+                                            className="absolute -top-2 -right-2 w-6 h-6 rounded-full bg-zinc-800 text-zinc-100 hover:bg-red-600 hover:text-white flex items-center justify-center z-20"
+                                            aria-label="Delete bubble"
+                                        >×</button>
+                                        <span className="relative px-2">{label}{cnt ? ` (${cnt})` : ''}</span>
+                                    </div>
+                                )
+                            })}
+                        </div>
                     </div>
                 )
             })}
