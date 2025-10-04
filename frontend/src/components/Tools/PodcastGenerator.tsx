@@ -75,7 +75,7 @@ export default function PodcastGenerator() {
   }
 
   return (
-    <div className="group rounded-2xl bg-zinc-950 border border-zinc-800 p-4 hover:border-purple-500/50 transition-all duration-300 hover:shadow-lg hover:shadow-purple-500/10">
+    <div className="group rounded-2xl bg-stone-950 border border-zinc-800 p-4 hover:border-purple-500/50 transition-all duration-300 hover:shadow-lg hover:shadow-purple-500/10">
       <div className="flex items-start justify-between gap-3">
         <div className="flex-1">
           <div className="flex items-center gap-2 mb-1">
@@ -83,7 +83,7 @@ export default function PodcastGenerator() {
             <div className="w-2 h-2 rounded-full bg-gradient-to-r from-purple-400 to-pink-400 animate-pulse"></div>
           </div>
           <div className="text-white font-semibold text-xl mb-2">AI Podcast</div>
-          <div className="text-zinc-300 text-sm leading-relaxed">
+          <div className="text-stone-300 text-sm leading-relaxed">
             Generate engaging podcasts from any topic or notes. Perfect for learning on the go.
           </div>
         </div>
@@ -96,7 +96,7 @@ export default function PodcastGenerator() {
               value={topic}
               onChange={(e) => setTopic(e.target.value)}
               placeholder="Enter topic or paste notes..."
-              className="w-full px-4 py-3 pr-16 rounded-xl bg-zinc-900/70 border border-zinc-700 text-white placeholder-zinc-400 focus:border-purple-500 focus:ring-2 focus:ring-purple-500/20 outline-none transition-all duration-300"
+              className="w-full px-4 py-3 pr-16 rounded-xl bg-stone-900/70 border border-zinc-700 text-white placeholder-zinc-400 focus:border-purple-500 focus:ring-2 focus:ring-purple-500/20 outline-none transition-all duration-300"
               onKeyDown={(e) => e.key === "Enter" && onGenerate()}
             />
           </div>
@@ -121,8 +121,8 @@ export default function PodcastGenerator() {
 
         {audioFile && (
           <div className="space-y-3">
-            <div className="p-4 rounded-xl bg-zinc-900/70 border border-zinc-700">
-              <div className="text-sm text-zinc-400 mb-2">Preview:</div>
+            <div className="p-4 rounded-xl bg-stone-900/70 border border-zinc-700">
+              <div className="text-sm text-stone-400 mb-2">Preview:</div>
               <audio 
                 controls 
                 className="w-full"
@@ -143,7 +143,7 @@ export default function PodcastGenerator() {
         )}
 
         {!audioFile && !busy && (
-          <div className="text-xs text-zinc-500 text-center p-2">
+          <div className="text-xs text-stone-500 text-center p-2">
             Click Generate to create a podcast
           </div>
         )}

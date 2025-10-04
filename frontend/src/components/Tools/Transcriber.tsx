@@ -243,7 +243,7 @@ export default function Transcriber() {
   }
 
   return (
-    <div className="group rounded-2xl bg-zinc-950 border border-zinc-800 p-4 hover:border-orange-500/50 transition-all duration-300 hover:shadow-lg hover:shadow-orange-500/10">
+    <div className="group rounded-2xl bg-stone-950 border border-zinc-800 p-4 hover:border-orange-500/50 transition-all duration-300 hover:shadow-lg hover:shadow-orange-500/10">
       <div className="flex items-start justify-between gap-3">
         <div className="flex-1">
           <div className="flex items-center gap-2 mb-1">
@@ -251,7 +251,7 @@ export default function Transcriber() {
             <div className="w-2 h-2 rounded-full bg-gradient-to-r from-orange-400 to-red-400 animate-pulse"></div>
           </div>
           <div className="text-white font-semibold text-xl mb-2">Audio to Text</div>
-          <div className="text-zinc-300 text-sm leading-relaxed">
+          <div className="text-stone-300 text-sm leading-relaxed">
             Convert lecture recordings and voice notes into organized, searchable study materials instantly.
           </div>
         </div>
@@ -291,7 +291,7 @@ export default function Transcriber() {
           <button
             onClick={() => fileInputRef.current?.click()}
             disabled={busy}
-            className="px-6 py-3 rounded-xl bg-zinc-800 hover:bg-zinc-700 disabled:opacity-50 disabled:cursor-not-allowed text-zinc-300 hover:text-white font-medium transition-all duration-300 flex items-center gap-2"
+            className="px-6 py-3 rounded-xl bg-stone-800 hover:bg-stone-700 disabled:opacity-50 disabled:cursor-not-allowed text-stone-300 hover:text-white font-medium transition-all duration-300 flex items-center gap-2"
           >
             <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
@@ -330,7 +330,7 @@ export default function Transcriber() {
                 </div>
 
                 <div className="grid gap-4 md:grid-cols-2">
-                  <div className="p-4 rounded-xl bg-zinc-900/50 border border-zinc-700">
+                  <div className="p-4 rounded-xl bg-stone-900/50 border border-zinc-700">
                     <h4 className="text-white font-medium mb-3 flex items-center gap-2">
                       <svg className="w-4 h-4 text-blue-400" fill="currentColor" viewBox="0 0 20 20">
                         <path fillRule="evenodd" d="M3 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z" clipRule="evenodd"/>
@@ -339,7 +339,7 @@ export default function Transcriber() {
                     </h4>
                     <ul className="space-y-2">
                       {studyMaterials.keyPoints.map((point, i) => (
-                        <li key={i} className="text-zinc-300 text-sm flex items-start gap-2">
+                        <li key={i} className="text-stone-300 text-sm flex items-start gap-2">
                           <span className="text-blue-400 mt-1">•</span>
                           {point}
                         </li>
@@ -347,7 +347,7 @@ export default function Transcriber() {
                     </ul>
                   </div>
 
-                  <div className="p-4 rounded-xl bg-zinc-900/50 border border-zinc-700">
+                  <div className="p-4 rounded-xl bg-stone-900/50 border border-zinc-700">
                     <h4 className="text-white font-medium mb-3 flex items-center gap-2">
                       <svg className="w-4 h-4 text-green-400" fill="currentColor" viewBox="0 0 20 20">
                         <path fillRule="evenodd" d="M17.707 9.293a1 1 0 010 1.414l-7 7a1 1 0 01-1.414 0l-7-7A.997.997 0 012 10V5a3 3 0 013-3h5c.256 0 .512.098.707.293l7 7zM5 6a1 1 0 100-2 1 1 0 000 2z" clipRule="evenodd"/>
@@ -356,7 +356,7 @@ export default function Transcriber() {
                     </h4>
                     <div className="space-y-3">
                       <div>
-                        <span className="text-xs text-zinc-400 uppercase tracking-wider">Topics</span>
+                        <span className="text-xs text-stone-400 uppercase tracking-wider">Topics</span>
                         <div className="flex flex-wrap gap-1 mt-1">
                           {studyMaterials.topics.map((topic, i) => (
                             <span key={i} className="px-2 py-1 bg-green-900/30 text-green-300 text-xs rounded-md">
@@ -366,7 +366,7 @@ export default function Transcriber() {
                         </div>
                       </div>
                       <div>
-                        <span className="text-xs text-zinc-400 uppercase tracking-wider">Categories</span>
+                        <span className="text-xs text-stone-400 uppercase tracking-wider">Categories</span>
                         <div className="flex flex-wrap gap-1 mt-1">
                           {studyMaterials.categories.map((cat, i) => (
                             <span key={i} className="px-2 py-1 bg-purple-900/30 text-purple-300 text-xs rounded-md">
@@ -380,7 +380,7 @@ export default function Transcriber() {
                 </div>
 
                 {studyMaterials.studyGuide.mainConcepts.length > 0 && (
-                  <div className="p-4 rounded-xl bg-zinc-900/50 border border-zinc-700">
+                  <div className="p-4 rounded-xl bg-stone-900/50 border border-zinc-700">
                     <h4 className="text-white font-medium mb-3 flex items-center gap-2">
                       <svg className="w-4 h-4 text-yellow-400" fill="currentColor" viewBox="0 0 20 20">
                         <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
@@ -389,19 +389,19 @@ export default function Transcriber() {
                     </h4>
                     <div className="grid gap-4 md:grid-cols-2">
                       <div>
-                        <h5 className="text-zinc-300 font-medium mb-2">Main Concepts</h5>
+                        <h5 className="text-stone-300 font-medium mb-2">Main Concepts</h5>
                         <ul className="space-y-1">
                           {studyMaterials.studyGuide.mainConcepts.map((concept, i) => (
-                            <li key={i} className="text-zinc-400 text-sm">• {concept}</li>
+                            <li key={i} className="text-stone-400 text-sm">• {concept}</li>
                           ))}
                         </ul>
                       </div>
                       {studyMaterials.studyGuide.questions.length > 0 && (
                         <div>
-                          <h5 className="text-zinc-300 font-medium mb-2">Study Questions</h5>
+                          <h5 className="text-stone-300 font-medium mb-2">Study Questions</h5>
                           <ul className="space-y-1">
                             {studyMaterials.studyGuide.questions.map((question, i) => (
-                              <li key={i} className="text-zinc-400 text-sm">• {question}</li>
+                              <li key={i} className="text-stone-400 text-sm">• {question}</li>
                             ))}
                           </ul>
                         </div>
@@ -412,9 +412,9 @@ export default function Transcriber() {
               </div>
             )}
 
-            <div className="p-4 rounded-xl bg-zinc-900/50 border border-zinc-700">
+            <div className="p-4 rounded-xl bg-stone-900/50 border border-zinc-700">
               <div className="flex items-center justify-between mb-3">
-                <label className="text-sm font-medium text-zinc-300">Original Transcription</label>
+                <label className="text-sm font-medium text-stone-300">Original Transcription</label>
                 <button
                   onClick={copyToClipboard}
                   className="text-xs px-3 py-1.5 rounded-lg bg-orange-600 text-white hover:bg-orange-700 transition-colors flex items-center gap-1"
@@ -425,7 +425,7 @@ export default function Transcriber() {
                   Copy
                 </button>
               </div>
-              <div className="text-white text-sm leading-relaxed max-h-48 overflow-y-auto bg-zinc-800/30 p-3 rounded-lg">
+              <div className="text-white text-sm leading-relaxed max-h-48 overflow-y-auto bg-stone-800/30 p-3 rounded-lg">
                 {transcription}
               </div>
             </div>

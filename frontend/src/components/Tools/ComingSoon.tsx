@@ -13,7 +13,7 @@ export default function ComingSoon() {
 
       <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
         {/* AI Study Planner */}
-        <div className="group rounded-2xl bg-zinc-950/50 border border-zinc-800 p-4 hover:border-blue-500/50 transition-all duration-300 hover:shadow-lg hover:shadow-blue-500/10 opacity-70 hover:opacity-90">
+        <div className="group rounded-2xl bg-stone-950/50 border border-zinc-800 p-4 hover:border-blue-500/50 transition-all duration-300 hover:shadow-lg hover:shadow-blue-500/10 opacity-70 hover:opacity-90">
           <div className="flex items-start justify-between gap-3">
             <div className="flex-1">
               <div className="flex items-center gap-2 mb-1">
@@ -24,7 +24,7 @@ export default function ComingSoon() {
               <div className="text-white font-semibold text-lg mb-2">
                 AI Study Planner
               </div>
-              <div className="text-zinc-400 text-sm leading-relaxed">
+              <div className="text-stone-400 text-sm leading-relaxed">
                 Create personalized study schedules with AI-optimized spaced
                 repetition and deadline management.
               </div>
@@ -49,7 +49,7 @@ export default function ComingSoon() {
         </div>
 
         {/* Mind Map Generator */}
-        <div className="group rounded-2xl bg-zinc-950/50 border border-zinc-800 p-4 hover:border-pink-500/50 transition-all duration-300 hover:shadow-lg hover:shadow-pink-500/10 opacity-70 hover:opacity-90">
+        <div className="group rounded-2xl bg-stone-950/50 border border-zinc-800 p-4 hover:border-pink-500/50 transition-all duration-300 hover:shadow-lg hover:shadow-pink-500/10 opacity-70 hover:opacity-90">
           <div className="flex items-start justify-between gap-3">
             <div className="flex-1">
               <div className="flex items-center gap-2 mb-1">
@@ -60,7 +60,7 @@ export default function ComingSoon() {
               <div className="text-white font-semibold text-lg mb-2">
                 Mind Map Generator
               </div>
-              <div className="text-zinc-400 text-sm leading-relaxed">
+              <div className="text-stone-400 text-sm leading-relaxed">
                 Convert complex topics into interactive visual mind maps with
                 AI-generated connections and insights.
               </div>
@@ -85,7 +85,7 @@ export default function ComingSoon() {
         </div>
 
         {/* Presentation Builder */}
-        <div className="group rounded-2xl bg-zinc-950/50 border border-zinc-800 p-4 hover:border-yellow-500/50 transition-all duration-300 hover:shadow-lg hover:shadow-yellow-500/10 opacity-70 hover:opacity-90">
+        <div className="group rounded-2xl bg-stone-950/50 border border-zinc-800 p-4 hover:border-yellow-500/50 transition-all duration-300 hover:shadow-lg hover:shadow-yellow-500/10 opacity-70 hover:opacity-90">
           <div className="flex items-start justify-between gap-3">
             <div className="flex-1">
               <div className="flex items-center gap-2 mb-1">
@@ -96,7 +96,7 @@ export default function ComingSoon() {
               <div className="text-white font-semibold text-lg mb-2">
                 Slide Builder Pro
               </div>
-              <div className="text-zinc-400 text-sm leading-relaxed">
+              <div className="text-stone-400 text-sm leading-relaxed">
                 Generate professional presentations with AI-designed slides,
                 animations, and speaker notes.
               </div>
@@ -111,7 +111,7 @@ export default function ComingSoon() {
       <div className="mt-6 text-center">
         <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-gradient-to-r from-zinc-800/50 to-zinc-700/50 border border-zinc-600/50">
           <div className="w-2 h-2 rounded-full bg-gradient-to-r from-blue-400 to-sky-400 animate-pulse"></div>
-          <span className="text-zinc-300 text-sm font-medium">
+          <span className="text-stone-300 text-sm font-medium">
             New tools launching every week
           </span>
         </div>

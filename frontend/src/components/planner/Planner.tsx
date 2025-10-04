@@ -9,17 +9,17 @@ function fmtTime(ts: number) {
 
 function DaySlots({ date, slots, tasks }: { date: string; slots: PlannerSlot[]; tasks: Record<string, PlannerTask> }) {
     return (
-        <div className="rounded-xl border border-zinc-800 bg-zinc-950 p-3">
-            <div className="text-xs text-zinc-400 mb-2">{date}</div>
+        <div className="rounded-xl border border-zinc-800 bg-stone-950 p-3">
+            <div className="text-xs text-stone-400 mb-2">{date}</div>
             <div className="space-y-2">
-                {slots.length === 0 && <div className="text-zinc-500 text-sm">No slots</div>}
+                {slots.length === 0 && <div className="text-stone-500 text-sm">No slots</div>}
                 {slots.map(s => (
-                    <div key={s.id} className="flex items-center justify-between text-sm text-zinc-200/90">
+                    <div key={s.id} className="flex items-center justify-between text-sm text-stone-200/90">
                         <div className="truncate">
-                            <span className="px-1.5 py-0.5 rounded bg-zinc-800/60 text-[10px] mr-2">{s.kind}</span>
+                            <span className="px-1.5 py-0.5 rounded bg-stone-800/60 text-[10px] mr-2">{s.kind}</span>
                             <span className="font-medium">{tasks[s.taskId]?.title || s.taskId}</span>
                         </div>
-                        <div className="text-zinc-400 text-xs">{fmtTime(s.start)} → {new Date(s.end).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}</div>
+                        <div className="text-stone-400 text-xs">{fmtTime(s.start)} → {new Date(s.end).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}</div>
                     </div>
                 ))}
             </div>
@@ -150,15 +150,15 @@ export default function Planner() {
     }
 
     return (
-        <div className="rounded-2xl border border-zinc-800 bg-zinc-950">
+        <div className="rounded-2xl border border-zinc-800 bg-stone-950">
             <div className="px-4 py-3 border-b border-zinc-800 flex items-center justify-between">
-                <div className="text-zinc-200 font-medium">Homework Planner</div>
+                <div className="text-stone-200 font-medium">Homework Planner</div>
                 <div className="flex items-center gap-2">
-                    <div className="text-xs bg-zinc-900 border border-zinc-800 rounded overflow-hidden">
-                        <button onClick={() => setView("list")} className={`px-2 py-1 ${view === 'list' ? 'bg-zinc-800 text-zinc-100' : 'text-zinc-300'}`}>List</button>
-                        <button onClick={() => setView("mindmap")} className={`px-2 py-1 ${view === 'mindmap' ? 'bg-zinc-800 text-zinc-100' : 'text-zinc-300'}`}>Mindmap</button>
+                    <div className="text-xs bg-stone-900 border border-zinc-800 rounded overflow-hidden">
+                        <button onClick={() => setView("list")} className={`px-2 py-1 ${view === 'list' ? 'bg-stone-800 text-stone-100' : 'text-stone-300'}`}>List</button>
+                        <button onClick={() => setView("mindmap")} className={`px-2 py-1 ${view === 'mindmap' ? 'bg-stone-800 text-stone-100' : 'text-stone-300'}`}>Mindmap</button>
                     </div>
-                    <button onClick={reload} className="text-xs px-2 py-1 rounded bg-zinc-800 text-zinc-200">Refresh</button>
+                    <button onClick={reload} className="text-xs px-2 py-1 rounded bg-stone-800 text-stone-200">Refresh</button>
                 </div>
             </div>
 
@@ -168,7 +168,7 @@ export default function Planner() {
                         value={text}
                         onChange={e => setText(e.target.value)}
                         placeholder="e.g. Calc HW 5 by Fri 6pm ~1.5h"
-                        className="flex-1 bg-zinc-900 border border-zinc-800 rounded-lg px-3 py-2 text-zinc-200 placeholder:text-zinc-500 outline-none focus:ring-1 focus:ring-zinc-700"
+                        className="flex-1 bg-stone-900 border border-zinc-800 rounded-lg px-3 py-2 text-stone-200 placeholder:text-stone-500 outline-none focus:ring-1 focus:ring-zinc-700"
                     />
                     <button onClick={add} disabled={loading} className="px-3 py-2 rounded-lg bg-blue-600 text-white disabled:opacity-60">Add</button>
                 </div>
@@ -190,34 +190,34 @@ export default function Planner() {
                 ) : (
                     <div className="grid gap-3">
                         {tasks.map(t => (
-                            <div key={t.id} className="rounded-xl border border-zinc-800 bg-zinc-950 p-3">
+                            <div key={t.id} className="rounded-xl border border-zinc-800 bg-stone-950 p-3">
                                 <div className="flex items-center justify-between">
                                     <div className="min-w-0">
-                                        <div className="text-zinc-100 font-medium truncate">{t.title}</div>
-                                        <div className="text-zinc-400 text-xs">Due {fmtTime(t.dueAt)} · {t.estMins} mins · P{t.priority}</div>
+                                        <div className="text-stone-100 font-medium truncate">{t.title}</div>
+                                        <div className="text-stone-400 text-xs">Due {fmtTime(t.dueAt)} · {t.estMins} mins · P{t.priority}</div>
                                     </div>
                                     <div className="flex items-center gap-2">
-                                        <select value={t.status} onChange={e => mark(t.id, e.target.value as any)} className="bg-zinc-900 border border-zinc-800 text-zinc-200 text-xs rounded px-2 py-1">
+                                        <select value={t.status} onChange={e => mark(t.id, e.target.value as any)} className="bg-stone-900 border border-zinc-800 text-stone-200 text-xs rounded px-2 py-1">
                                             <option value="todo">todo</option>
                                             <option value="doing">doing</option>
                                             <option value="done">done</option>
                                             <option value="blocked">blocked</option>
                                         </select>
-                                        <button onClick={() => planTask(t.id)} className="text-xs px-2 py-1 rounded bg-zinc-800 text-zinc-200">Plan</button>
-                                        <button onClick={() => gen(t.id, "summary")} className="text-xs px-2 py-1 rounded bg-zinc-800 text-zinc-200">Summary</button>
-                                        <button onClick={() => gen(t.id, "flashcards")} className="text-xs px-2 py-1 rounded bg-zinc-800 text-zinc-200">Flashcards</button>
+                                        <button onClick={() => planTask(t.id)} className="text-xs px-2 py-1 rounded bg-stone-800 text-stone-200">Plan</button>
+                                        <button onClick={() => gen(t.id, "summary")} className="text-xs px-2 py-1 rounded bg-stone-800 text-stone-200">Summary</button>
+                                        <button onClick={() => gen(t.id, "flashcards")} className="text-xs px-2 py-1 rounded bg-stone-800 text-stone-200">Flashcards</button>
                                         <button onClick={() => del(t.id)} className="text-xs px-2 py-1 rounded bg-red-600 text-white">Delete</button>
                                     </div>
                                 </div>
                                 {materials[t.id]?.summary && (
-                                    <div className="mt-3 text-sm text-zinc-200 whitespace-pre-wrap">{materials[t.id].summary.answer || materials[t.id].summary}</div>
+                                    <div className="mt-3 text-sm text-stone-200 whitespace-pre-wrap">{materials[t.id].summary.answer || materials[t.id].summary}</div>
                                 )}
                                 {Array.isArray(materials[t.id]?.flashcards?.flashcards) && (
                                     <div className="mt-3 grid grid-cols-1 sm:grid-cols-2 gap-2">
                                         {materials[t.id].flashcards.flashcards.map((c: any, i: number) => (
                                             <div key={i} className="border border-zinc-800 rounded-lg p-2">
-                                                <div className="text-zinc-200 text-sm font-medium">Q: {c.q}</div>
-                                                <div className="text-zinc-400 text-sm">A: {c.a}</div>
+                                                <div className="text-stone-200 text-sm font-medium">Q: {c.q}</div>
+                                                <div className="text-stone-400 text-sm">A: {c.a}</div>
                                             </div>
                                         ))}
                                     </div>
@@ -228,7 +228,7 @@ export default function Planner() {
                 )}
                 {view === 'list' && (
                     <div>
-                        <div className="text-zinc-300 text-sm mb-2">Weekly Plan</div>
+                        <div className="text-stone-300 text-sm mb-2">Weekly Plan</div>
                         {plan ? (
                             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
                                 {plan.days.map(d => (
@@ -236,7 +236,7 @@ export default function Planner() {
                                 ))}
                             </div>
                         ) : (
-                            <div className="text-zinc-500 text-sm">No plan yet</div>
+                            <div className="text-stone-500 text-sm">No plan yet</div>
                         )}
                     </div>
                 )}

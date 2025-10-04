@@ -274,16 +274,16 @@ export default function Chat() {
 
   return (
     <div className="flex flex-col min-h-screen w-full px-4 lg:pl-28 lg:pr-4">
-      <div className="grid grid-cols-1 lg:grid-cols-[1fr_320px] gap-8 mt-20 lg:mt-16 mb-16">
+      <div className="grid grid-cols-1 lg:grid-cols-[1fr_320px] gap-8 mt-20 lg:mt-6 mb-16">
         <div className="flex-1 pr-6">
           <div className="w-full max-w-5xl mx-auto p-4 pt-2 pb-28">
             <div className="space-y-6">
               {list.map((m, i) => {
-                const userBubble = "inline-block max-w-[85%] bg-zinc-900/70 border border-zinc-800 rounded-2xl px-4 py-3";
+                const userBubble = "inline-block max-w-[85%] bg-stone-900/70 border border-zinc-800 rounded-2xl px-4 py-3";
                 if (m.role === "assistant") {
                   return (
                     <div key={i} className="w-full flex justify-start">
-                      <div className="w-full mx-auto rounded-3xl bg-zinc-950/90 border border-zinc-900 shadow-[0_10px_30px_rgba(0,0,0,0.45)] ring-1 ring-black/10 backdrop-blur px-6 md:px-8 py-6 md:py-8 max-w-[min(100%,1000px)]">
+                      <div className="w-full mx-auto rounded-3xl bg-stone-950/90 border border-zinc-900 shadow-[0_10px_30px_rgba(0,0,0,0.45)] ring-1 ring-black/10 backdrop-blur px-6 md:px-8 py-6 md:py-8 max-w-[min(100%,1000px)]">
                         <div className="animate-[fadeIn_300ms_ease-out] leading-7 md:leading-8">
                           <MarkdownView md={m.content} />
                         </div>
@@ -294,7 +294,7 @@ export default function Chat() {
                 return (
                   <div key={i} className="w-full flex justify-start">
                     <div className={userBubble}>
-                      <div className="text-zinc-200 whitespace-pre-wrap leading-relaxed">{m.content}</div>
+                      <div className="text-stone-200 whitespace-pre-wrap leading-relaxed">{m.content}</div>
                     </div>
                   </div>
                 );

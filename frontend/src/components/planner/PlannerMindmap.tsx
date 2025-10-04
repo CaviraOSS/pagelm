@@ -406,7 +406,7 @@ export default function PlannerMindmap({ tasks, plan, onPlan, onAssist, onUpdate
                     `radial-gradient(1200px 800px at 50% 50%, rgba(255,255,255,0.06), rgba(0,0,0,0) 70%)`
                 ].join(', ')
             }} />
-            <div className="absolute top-3 left-3 z-20 text-[11px] text-zinc-400 bg-zinc-900/60 border border-zinc-800 rounded px-2 py-1 backdrop-blur">
+            <div className="absolute top-3 left-3 z-20 text-[11px] text-stone-400 bg-stone-900/60 border border-zinc-800 rounded px-2 py-1 backdrop-blur">
                 Drag to pan, scroll to zoom, drag nodes to arrange. Double-click a node to focus.
             </div>
             <svg className="absolute inset-0 w-full h-full pointer-events-none" xmlns="http://www.w3.org/2000/svg">
@@ -550,23 +550,23 @@ export default function PlannerMindmap({ tasks, plan, onPlan, onAssist, onUpdate
                                 <div className="pointer-events-none absolute -inset-2 opacity-35" style={{ background: `radial-gradient(22px 22px at 50% 65%, rgba(56,189,248,0.2), transparent 70%)` }} />
                                 <div onPointerDown={e => onDown(e, t.id)} className="cursor-grab active:cursor-grabbing rounded-full border bg-[#0b1220]/70 border-[#1f2937] pl-3 pr-1.5 py-1.5 shadow-[0_2px_8px_rgba(0,0,0,0.4)] backdrop-blur flex items-center gap-1.5">
                                     <div className="text-[12px] text-slate-200 whitespace-nowrap max-w-[260px] truncate">{t.title}</div>
-                                    <button onClick={(e) => { e.stopPropagation(); setMenuOpen(menuOpen === t.id ? null : t.id) }} className="text-[12px] text-slate-300 hover:text-slate-100 px-1 rounded hover:bg-zinc-800">⋯</button>
+                                    <button onClick={(e) => { e.stopPropagation(); setMenuOpen(menuOpen === t.id ? null : t.id) }} className="text-[12px] text-slate-300 hover:text-slate-100 px-1 rounded hover:bg-stone-800">⋯</button>
                                 </div>
                                 {menuOpen === t.id && (
-                                    <div className="absolute left-0 top-[120%] z-30 bg-zinc-900/95 border border-zinc-800 rounded-md shadow-lg min-w-[160px] p-1">
-                                        <button onClick={() => { setMenuOpen(null); onUpdateStatus(t.id, 'doing'); onPlan(t.id); }} className="w-full text-left text-[12px] text-zinc-200 px-2 py-1 rounded hover:bg-zinc-800">Start now</button>
-                                        <button onClick={() => { setMenuOpen(null); onPlan(t.id) }} className="w-full text-left text-[12px] text-zinc-200 px-2 py-1 rounded hover:bg-zinc-800">Plan</button>
+                                    <div className="absolute left-0 top-[120%] z-30 bg-stone-900/95 border border-zinc-800 rounded-md shadow-lg min-w-[160px] p-1">
+                                        <button onClick={() => { setMenuOpen(null); onUpdateStatus(t.id, 'doing'); onPlan(t.id); }} className="w-full text-left text-[12px] text-stone-200 px-2 py-1 rounded hover:bg-stone-800">Start now</button>
+                                        <button onClick={() => { setMenuOpen(null); onPlan(t.id) }} className="w-full text-left text-[12px] text-stone-200 px-2 py-1 rounded hover:bg-stone-800">Plan</button>
                                         <div className="border-t border-zinc-800 my-1" />
-                                        <button onClick={() => { setMenuOpen(null); onAssist(t.id, 'summary') }} className="w-full text-left text-[12px] text-zinc-200 px-2 py-1 rounded hover:bg-zinc-800">Assist: Summary</button>
-                                        <button onClick={() => { setMenuOpen(null); onAssist(t.id, 'studyGuide') }} className="w-full text-left text-[12px] text-zinc-200 px-2 py-1 rounded hover:bg-zinc-800">Assist: Study Guide</button>
-                                        <button onClick={() => { setMenuOpen(null); onAssist(t.id, 'flashcards') }} className="w-full text-left text-[12px] text-zinc-200 px-2 py-1 rounded hover:bg-zinc-800">Assist: Flashcards</button>
+                                        <button onClick={() => { setMenuOpen(null); onAssist(t.id, 'summary') }} className="w-full text-left text-[12px] text-stone-200 px-2 py-1 rounded hover:bg-stone-800">Assist: Summary</button>
+                                        <button onClick={() => { setMenuOpen(null); onAssist(t.id, 'studyGuide') }} className="w-full text-left text-[12px] text-stone-200 px-2 py-1 rounded hover:bg-stone-800">Assist: Study Guide</button>
+                                        <button onClick={() => { setMenuOpen(null); onAssist(t.id, 'flashcards') }} className="w-full text-left text-[12px] text-stone-200 px-2 py-1 rounded hover:bg-stone-800">Assist: Flashcards</button>
                                         <div className="border-t border-zinc-800 my-1" />
-                                        <label className="block text-[12px] text-zinc-200 px-2 py-1 rounded hover:bg-zinc-800 cursor-pointer">
+                                        <label className="block text-[12px] text-stone-200 px-2 py-1 rounded hover:bg-stone-800 cursor-pointer">
                                             Upload file
                                             <input type="file" className="hidden" onChange={e => { const f = e.target.files?.[0]; if (f) onUpload(t.id, f); setMenuOpen(null) }} />
                                         </label>
-                                        <button onClick={() => { const val = window.prompt('Add note'); if (val != null) { onUpdateNotes?.(t.id, val) } setMenuOpen(null) }} className="w-full text-left text-[12px] text-zinc-200 px-2 py-1 rounded hover:bg-zinc-800">Add note…</button>
-                                        <button onClick={() => { recenterSteps(t.id); setMenuOpen(null) }} className="w-full text-left text-[12px] text-zinc-200 px-2 py-1 rounded hover:bg-zinc-800">Recenter steps</button>
+                                        <button onClick={() => { const val = window.prompt('Add note'); if (val != null) { onUpdateNotes?.(t.id, val) } setMenuOpen(null) }} className="w-full text-left text-[12px] text-stone-200 px-2 py-1 rounded hover:bg-stone-800">Add note…</button>
+                                        <button onClick={() => { recenterSteps(t.id); setMenuOpen(null) }} className="w-full text-left text-[12px] text-stone-200 px-2 py-1 rounded hover:bg-stone-800">Recenter steps</button>
                                         <div className="border-t border-zinc-800 my-1" />
                                         <button onClick={() => { setMenuOpen(null); onDelete(t.id) }} className="w-full text-left text-[12px] text-red-400 px-2 py-1 rounded hover:bg-red-950/40">Delete task</button>
                                     </div>
@@ -581,7 +581,7 @@ export default function PlannerMindmap({ tasks, plan, onPlan, onAssist, onUpdate
                                 const relX = sp.x - p.x
                                 const relY = sp.y - p.y
                                 return (
-                                    <div key={sid} className="absolute rounded-full border border-zinc-800 bg-zinc-950/80 text-center text-zinc-300 cursor-grab active:cursor-grabbing"
+                                    <div key={sid} className="absolute rounded-full border border-zinc-800 bg-stone-950/80 text-center text-stone-300 cursor-grab active:cursor-grabbing"
                                         onPointerDown={e => {
                                             const rect = wrapRef.current?.getBoundingClientRect()
                                             const localX = rect ? e.clientX - rect.left : e.clientX
@@ -613,7 +613,7 @@ export default function PlannerMindmap({ tasks, plan, onPlan, onAssist, onUpdate
                                                     const nn = { ...sp }; delete nn[sid]; return nn
                                                 })
                                             }}
-                                            className="absolute -top-2 -right-2 w-6 h-6 rounded-full bg-zinc-800 text-zinc-100 hover:bg-red-600 hover:text-white flex items-center justify-center z-20"
+                                            className="absolute -top-2 -right-2 w-6 h-6 rounded-full bg-stone-800 text-stone-100 hover:bg-red-600 hover:text-white flex items-center justify-center z-20"
                                             aria-label="Delete bubble"
                                         >×</button>
                                         <span className="relative px-2">{label}{cnt ? ` (${cnt})` : ''}</span>
@@ -651,7 +651,7 @@ export default function PlannerMindmap({ tasks, plan, onPlan, onAssist, onUpdate
                 </div>
             ))}
 
-            <div className="absolute top-3 right-3 z-20 bg-zinc-900/70 backdrop-blur border border-zinc-800 rounded-lg px-2 py-1 flex items-center gap-2 text-xs text-zinc-300">
+            <div className="absolute top-3 right-3 z-20 bg-stone-900/70 backdrop-blur border border-zinc-800 rounded-lg px-2 py-1 flex items-center gap-2 text-xs text-stone-300">
                 <button onClick={() => {
                     const rect = wrapRef.current?.getBoundingClientRect()
                     const cx = rect ? rect.width / 2 : 300
@@ -663,7 +663,7 @@ export default function PlannerMindmap({ tasks, plan, onPlan, onAssist, onUpdate
                     const id = Math.random().toString(36).slice(2, 9)
                     setCustomNodes(list => [...list, { id, x: worldX, y: worldY, label: 'Idea', color }])
                     setEditingId(id)
-                }} className="px-2 py-1 bg-zinc-800 rounded">Add bubble</button>
+                }} className="px-2 py-1 bg-stone-800 rounded">Add bubble</button>
                 <button onClick={() => {
                     const rect = wrapRef.current?.getBoundingClientRect()
                     const cx = rect ? rect.width / 2 : 0
@@ -673,7 +673,7 @@ export default function PlannerMindmap({ tasks, plan, onPlan, onAssist, onUpdate
                     const worldY = (cy - pan.y) / zoom
                     setPan({ x: cx - worldX * newZoom, y: cy - worldY * newZoom })
                     setZoom(newZoom)
-                }} className="px-2 py-1 bg-zinc-800 rounded">-</button>
+                }} className="px-2 py-1 bg-stone-800 rounded">-</button>
                 <div className="px-2">{Math.round(zoom * 100)}%</div>
                 <button onClick={() => {
                     const rect = wrapRef.current?.getBoundingClientRect()
@@ -684,8 +684,8 @@ export default function PlannerMindmap({ tasks, plan, onPlan, onAssist, onUpdate
                     const worldY = (cy - pan.y) / zoom
                     setPan({ x: cx - worldX * newZoom, y: cy - worldY * newZoom })
                     setZoom(newZoom)
-                }} className="px-2 py-1 bg-zinc-800 rounded">+</button>
-                <button onClick={() => { setPan({ x: 0, y: 0 }); setZoom(1.25) }} className="px-2 py-1 bg-zinc-800 rounded">Reset</button>
+                }} className="px-2 py-1 bg-stone-800 rounded">+</button>
+                <button onClick={() => { setPan({ x: 0, y: 0 }); setZoom(1.25) }} className="px-2 py-1 bg-stone-800 rounded">Reset</button>
             </div>
         </div>
     )

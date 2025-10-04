@@ -134,9 +134,9 @@ export default function Quiz() {
         <div className="flex items-center justify-between mb-6">
           <div className="flex items-center gap-3">
             <Link to='/'
-              className="p-2 rounded-xl bg-zinc-950 border border-zinc-800 hover:bg-zinc-900 transition-colors"
+              className="p-2 rounded-xl bg-stone-950 border border-zinc-800 hover:bg-stone-900 transition-colors"
               aria-label="Back">
-              <svg viewBox="0 0 24 24" className="size-5 text-zinc-300" fill="none" stroke="currentColor" strokeWidth="1.5">
+              <svg viewBox="0 0 24 24" className="size-5 text-stone-300" fill="none" stroke="currentColor" strokeWidth="1.5">
                 <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 19.5 8.25 12l7.5-7.5" />
               </svg>
             </Link>

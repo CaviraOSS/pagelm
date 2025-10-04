@@ -28,7 +28,7 @@ export default function SmartNotes() {
   }
 
   return (
-    <div className="group rounded-2xl bg-zinc-950 border border-zinc-800 p-4 hover:border-sky-500/50 transition-all duration-300 hover:shadow-lg hover:shadow-violet-500/10">
+    <div className="group rounded-2xl bg-stone-950 border border-zinc-800 p-4 hover:border-sky-500/50 transition-all duration-300 hover:shadow-lg hover:shadow-violet-500/10">
       <div className="flex items-start justify-between gap-3">
         <div className="flex-1">
           <div className="flex items-center gap-2 mb-1">
@@ -36,7 +36,7 @@ export default function SmartNotes() {
             <div className="w-2 h-2 rounded-full bg-gradient-to-r from-blue-400 to-sky-400 animate-pulse"></div>
           </div>
           <div className="text-white font-semibold text-xl mb-2">SmartNotes</div>
-          <div className="text-zinc-300 text-sm leading-relaxed">
+          <div className="text-stone-300 text-sm leading-relaxed">
             Transform any topic into comprehensive, structured study notes. Perfect for exam prep and research.
           </div>
         </div>
@@ -49,7 +49,7 @@ export default function SmartNotes() {
               value={topic}
               onChange={(e) => setTopic(e.target.value)}
               placeholder="Enter your topic..."
-              className="w-full px-4 py-3 pr-16 rounded-xl bg-zinc-900/70 border border-zinc-700 text-white placeholder-zinc-400 focus:border-sky-500 focus:ring-2 focus:ring-sky-500/20 outline-none transition-all duration-300"
+              className="w-full px-4 py-3 pr-16 rounded-xl bg-stone-900/70 border border-zinc-700 text-white placeholder-zinc-400 focus:border-sky-500 focus:ring-2 focus:ring-sky-500/20 outline-none transition-all duration-300"
               onKeyDown={(e) => e.key === "Enter" && onGenerate()}
             />
           </div>

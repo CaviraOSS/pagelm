@@ -13,7 +13,7 @@ export default function PlannerPage() {
                                 className="p-2 rounded-xl bg-stone-950 border border-stone-900 hover:bg-stone-900 transition-colors"
                                 aria-label="Back"
                             >
-                                <svg viewBox="0 0 24 24" className="size-5 text-zinc-300" fill="none" stroke="currentColor" strokeWidth="1.5">
+                                <svg viewBox="0 0 24 24" className="size-5 text-stone-300" fill="none" stroke="currentColor" strokeWidth="1.5">
                                     <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 19.5 8.25 12l7.5-7.5" />
                                 </svg>
                             </Link>
