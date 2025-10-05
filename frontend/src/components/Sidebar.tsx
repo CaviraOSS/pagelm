@@ -26,15 +26,22 @@ export default function Sidebar() {
     const idk = document.getElementById("idk")
     idk?.classList.toggle("flex");
     idk?.classList.toggle("hidden");
-    document.getElementById("idk0")?.classList.toggle("rounded-r-none")
+    document.getElementById("idk0")?.classList.toggle("md:rounded-r-none")
     setIsToggled(!isToggled)
   }
 
   return (
-    <aside className='left-0 h-screen fixed p-4 z-50 hidden lg:flex'>
-      <div id='idk0' className='w-20 h-full rounded-3xl bg-stone-950 border border-stone-900 text-stone-400 flex flex-col items-center justify-between py-4'>
-        <img src='/logo.png' alt='logo' className='w-10 h-auto rounded-full' />
-        <nav className='flex flex-col items-center space-y-2'>
+    <aside className='left-0 bottom-0 w-screen md:w-fit md:h-screen fixed p-4 z-50 lg:flex'>
+      <div id='idk' className='w-64 md:order-2 h-full z-40 rounded-l-none rounded-2xl bg-stone-950 border border-l-transparent border-stone-900 hidden flex-col p-4 space-y-3 overflow-y-auto custom-scroll'>
+        {chats?.chats.map((chat) => (
+          <Link key={chat.id} to={`/chat/?chatId=${chat.id}`} className='p-2 hover:text-stone-200 hover:bg-stone-900 w-full rounded-xl block text-sm min-h-fit truncate'>
+            {chat.title || 'Untitled Chat'}
+          </Link>
+        ))}
+      </div>
+      <div id='idk0' className='md:w-20 md:order-1 h-full rounded-3xl bg-stone-950/50 backdrop-blur-xl border border-stone-900 text-stone-400 flex flex-col items-center justify-between py-4'>
+        <img src='/logo.png' alt='logo' className='w-10 h-auto rounded-full hidden md:block' />
+        <nav className='flex md:flex-col items-center space-x-4 md:space-x-0 md:space-y-2 my-auto'>
           <Link to='/' className={b('/')}>
             <svg className="size-6" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" clip-rule="evenodd" d="M6.29367 4.96556C3.62685 6.90311 2.29344 7.87189 1.76974 9.30291C1.72773 9.41771 1.68994 9.534 1.65645 9.65157C1.23901 11.1171 1.74832 12.6846 2.76696 15.8197C3.78559 18.9547 4.2949 20.5222 5.49405 21.4625C5.59025 21.5379 5.68918 21.6098 5.79064 21.678C7.05546 22.5279 8.70364 22.5279 12 22.5279C15.2964 22.5279 16.9446 22.5279 18.2094 21.678C18.3108 21.6098 18.4098 21.5379 18.506 21.4625C19.7051 20.5222 20.2144 18.9547 21.2331 15.8197C22.2517 12.6846 22.761 11.1171 22.3436 9.65157C22.3101 9.534 22.2723 9.41771 22.2303 9.30291C21.7066 7.87189 20.3732 6.90312 17.7064 4.96557C15.0395 3.02801 13.7061 2.05923 12.1833 2.00336C12.0611 1.99888 11.9389 1.99888 11.8167 2.00336C10.2939 2.05923 8.96048 3.02801 6.29367 4.96556ZM10 17.0697C9.58579 17.0697 9.25 17.4054 9.25 17.8197C9.25 18.2339 9.58579 18.5697 10 18.5697H14C14.4142 18.5697 14.75 18.2339 14.75 17.8197C14.75 17.4054 14.4142 17.0697 14 17.0697H10Z" fill="currentColor" /></svg>
           </Link>
@@ -66,17 +73,6 @@ export default function Sidebar() {
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" clip-rule="evenodd" d="M5.24472 6.45492C5 7.20808 5 8.13872 5 10V17.3874C5 19.3045 5 20.2631 5.34196 20.77C5.75971 21.3893 6.48778 21.7242 7.22986 21.6383C7.8373 21.568 8.56509 20.9442 10.0207 19.6966C10.6614 19.1474 10.9818 18.8728 11.3337 18.7484C11.7648 18.5961 12.2352 18.5961 12.6663 18.7484C13.0182 18.8728 13.3386 19.1474 13.9793 19.6965C15.4349 20.9442 16.1627 21.568 16.7701 21.6383C17.5122 21.7242 18.2403 21.3893 18.658 20.77C19 20.2631 19 19.3045 19 17.3874V10C19 8.13872 19 7.20808 18.7553 6.45492C18.2607 4.93273 17.0673 3.73931 15.5451 3.24472C14.7919 3 13.8613 3 12 3C10.1387 3 9.20808 3 8.45492 3.24472C6.93273 3.73931 5.73931 4.93273 5.24472 6.45492ZM12 5.25C11.5858 5.25 11.25 5.58579 11.25 6C11.25 6.41421 11.5858 6.75 12 6.75C13.7949 6.75 15.25 8.20507 15.25 10C15.25 10.4142 15.5858 10.75 16 10.75C16.4142 10.75 16.75 10.4142 16.75 10C16.75 7.37665 14.6234 5.25 12 5.25Z" fill="currentColor" /></svg>
           </Link>
         </nav>
-        {/* Why does this even exist? */}
-        <button className='p-2 hover:bg-stone-900 rounded-xl duration-300 transition-all opacity-0'>
-          <svg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' strokeWidth='1.5' stroke='currentColor' className='size-6'><path strokeLinecap='round' strokeLinejoin='round' d='M9.594 3.94c.09-.542.56-.94 1.11-.94h2.593c.55 0 1.02.398 1.11.94l.213 1.281c.063.374.313.686.645.87.074.04.147.083.22.127.325.196.72.257 1.075.124l1.217-.456a1.125 1.125 0 0 1 1.37.49l1.296 2.247a1.125 1.125 0 0 1-.26 1.431l-1.003.827c-.293.241-.438.613-.43.992a7.723 7.723 0 0 1 0 .255c-.008.378.137.75.43.991l1.004.827c.424.35.534.955.26 1.43l-1.298 2.247a1.125 1.125 0 0 1-1.369.491l-1.217-.456c-.355-.133-.75-.072-1.076.124a6.47 6.47 0 0 1-.22.128c-.331.183-.581.495-.644.869l-.213 1.281c-.09.543-.56.94-1.11.94h-2.594c-.55 0-1.019-.398-1.11-.94l-.213-1.281c-.062-.374-.312-.686-.644-.87a6.52 6.52 0 0 1-.22-.127c-.325-.196-.72-.257-1.076-.124l-1.217.456a1.125 1.125 0 0 1-1.369-.49l-1.297-2.247a1.125 1.125 0 0 1 .26-1.431l1.004-.827c.292-.24.437-.613.43-.991a6.932 6.932 0 0 1 0-.255c.007-.38-.138-.751-.43-.992l-1.004-.827a1.125 1.125 0 0 1-.26-1.43l1.297-2.247a1.125 1.125 0 0 1 1.37-.491l1.216.456c.356.133.751.072 1.076-.124.072-.044.146-.086.22-.128.332-.183.582-.495.644-.869l.214-1.28Z' /><path strokeLinecap='round' strokeLinejoin='round' d='M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z' /></svg>
-        </button>
-      </div>
-      <div id='idk' className='w-64 h-full z-40 rounded-l-none rounded-2xl bg-stone-950 border border-l-transparent border-stone-900 hidden flex-col p-4 space-y-3 overflow-y-auto custom-scroll'>
-        {chats?.chats.map((chat) => (
-          <Link key={chat.id} to={`/chat/?chatId=${chat.id}`} className='p-2 hover:text-stone-200 hover:bg-stone-900 w-full rounded-xl block text-sm min-h-fit truncate'>
-            {chat.title || 'Untitled Chat'}
-          </Link>
-        ))}
       </div>
     </aside>
   )
