@@ -1,10 +1,14 @@
 {
+  "name": "pagelm",
   "scripts": {
     "dev": "nodemon",
     "build": "tsc -p backend/tsconfig.json",
     "start": "node backend/dist/src/core/index.js"
   },
-  "author": "nullure, CaviraOSS",
+  "authors": [
+    "nullure (https://github.com/nullure)",
+    "recabasic (https://github.com/recabasic)"
+  ],
   "engines": {
     "node": ">=21.18.0"
   },
