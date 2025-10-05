@@ -26,7 +26,7 @@ export default function Tools() {
           </div>
         </div>
 
-        <div className="grid gap-6">
+        <div className="grid gap-6 mb-12">
           <SmartNotes />
           <PodcastGenerator />
           <Transcriber />
