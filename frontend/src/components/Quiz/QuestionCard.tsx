@@ -41,7 +41,7 @@ export default function QuestionCard({
           })}
         </div>
 
-        <div className="mt-6 flex justify-between items-center">
+        <div className="mt-6 flex flex-col md:flex-row justify-between items-center">
           <button onClick={onHint} className="bg-stone-900 hover:bg-stone-800 border border-stone-900 hover:border-stone-800 text-stone-200 hover:text-white rounded-xl px-4 py-2 font-medium transition-all duration-300 flex items-center gap-2">
             <span className="text-lg">💡</span> Show Hint
           </button>
