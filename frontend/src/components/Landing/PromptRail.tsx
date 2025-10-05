@@ -96,8 +96,8 @@ export default function PromptRail({ onSend }: { onSend?: (prompt: string) => vo
   };
 
   return (
-    <div className="flex items-center justify-center pt-2 mt-2 md:mt-0">
-      <div className="relative z-0 rounded-3xl rounded-bl-2xl md:rounded-r-none h-full p-2 px-4 border border-stone-800 md:border-r-0 text-sm flex items-center -ml-4 md:-ml-6 overflow-hidden max-w-sm">
+    <div className="items-center justify-center pt-2 mt-2 md:mt-0 hidden md:flex">
+      <div className="relative z-0 rounded-3xl rounded-tl-[22px] rounded-bl-2xl md:rounded-r-none h-full p-2 px-4 border border-stone-800 md:border-r-0 text-sm flex items-center -ml-4 md:-ml-6.5 overflow-hidden max-w-sm">
         <div ref={railRef} className="h-8 overflow-hidden relative w-full cursor-grab active:cursor-grabbing">
           <div className="transition-transform duration-500 ease-in-out" style={{ transform: `translateY(${translateY}px)` }}>
             {PROMPTS.map((p, i) => (

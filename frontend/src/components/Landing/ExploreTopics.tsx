@@ -80,8 +80,11 @@ export default function ExploreTopics() {
         </div>
 
         <div
-          className="max-h-0 overflow-hidden"
-          style={{ transition: "max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1)", maxHeight: open ? 1000 : 0 }}
+          className="overflow-hidden"
+          style={{
+            transition: "max-height 0.5s cubic-bezier(0.4, 0, 0.2, 1)",
+            maxHeight: open ? 1000 : 0
+          }}
         >
           {moreRows.map((row, i) => (
             <div key={i} className="grid grid-cols-2 md:grid-cols-3 gap-4 mb-4">
@@ -93,7 +96,13 @@ export default function ExploreTopics() {
         </div>
       </div>
 
-      <div className="absolute w-full h-full bottom-0 bg-gradient-to-b from-transparent to-black/80 pointer-events-none" />
+      <div
+        className="absolute w-full h-full bottom-0 bg-gradient-to-b from-transparent to-black/80 pointer-events-none"
+        style={{
+          transition: "opacity 0.5s cubic-bezier(0.4, 0, 0.2, 1)",
+          opacity: open ? 0 : 1
+        }}
+      />
     </div>
   );
 }

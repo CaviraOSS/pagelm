@@ -84,15 +84,15 @@ export default function Landing() {
           onDrop={onDropZoneDrop}
         />
 
-        <div className="w-fit flex">
-          <div className="w-fit min-w-fit p-1.5 rounded-2xl rounded-t-none bg-stone-950 flex flex-col sm:flex-row items-start sm:items-center border border-stone-900 border-t-0 border-r-0 border-b-0 sm:border-b shadow-[inset_2px_-2px_15px] shadow-stone-900/80">
-            <div className="md:flex items-start sm:items-center space-y-2 sm:space-y-0 sm:space-x-4 p-1.5">
+        <div className="w-full md:w-fit flex">
+          <div className="w-full md:w-fit md:min-w-fit p-1.5 rounded-2xl rounded-t-none bg-stone-950 flex flex-col items-start sm:items-center border border-stone-900 border-t-0 border-r-0 border-b-0 sm:border-b shadow-[inset_2px_-2px_15px] shadow-stone-900/80">
+            <div className="flex items-start justify-between md:justify-start space-x-2 p-1.5 w-full">
               <div className="relative">
                 <div
                   onClick={() => setShowMode(!showMode)}
-                  className="flex items-center space-x-4 p-1 rounded-xl hover:bg-white/5 duration-300 transition-all cursor-pointer"
+                  className="flex items-center space-x-4 p-1.5 rounded-xl hover:bg-white/5 duration-300 transition-all cursor-pointer"
                 >
-                  <div className="flex flex-col p-1">
+                  <div className="flex flex-col -space-y-0.5 pr-2">
                     <span className="text-xs text-stone-300">Prompt Mode</span>
                     <span className="text-sm font-semibold text-white">{mode}</span>
                   </div>
@@ -102,7 +102,7 @@ export default function Landing() {
                 </div>
 
                 {showMode && (
-                  <div className="absolute top-full left-0 p-1 mt-1 w-36 bg-stone-950 border border-stone-800 rounded-xl shadow-lg z-20">
+                  <div className="absolute top-full left-0 mt-1 p-1 w-36 bg-stone-950 border border-stone-800 rounded-xl shadow-lg z-20">
                     {["Chat", "Quiz"].map((opt) => (
                       <div
                         key={opt}
@@ -120,29 +120,28 @@ export default function Landing() {
                 )}
               </div>
 
-              <div className="w-px h-8 mx-2 bg-white/10 rounded-full hidden sm:block" />
+              <div className="w-px h-8 mx-2 bg-white/10 rounded-full mt-2" />
 
-              <div className="p-1.5 md:h-full hover:bg-white/5 rounded-xl flex items-center space-x-2 cursor-pointer min-w-fit h-fit" onClick={onPickFile} title={stagedFile ? stagedFile.name : "Click or drop"}>
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="size-9 bg-white/5 rounded-full p-2">
+              <div className="p-1.5 rounded-xl hover:bg-white/5 duration-300 transition-all cursor-pointer min-w-fit h-fit hidden md:flex items-center space-x-4" onClick={onPickFile} title={stagedFile ? stagedFile.name : "Click or drop"}>
+                <div className="flex flex-col -space-y-0.5 pr-2">
+                  <span className="text-xs text-stone-300">{stagedFile ? "File selected" : "Add files"}</span>
+                  <span className="text-sm font-semibold text-white">{stagedFile ? stagedFile.name : "Click or drop"}</span>
+                </div>
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="size-6 text-stone-400">
                   <path
                     fillRule="evenodd"
                     d="M5.5 17a4.5 4.5 0 0 1-1.44-8.765 4.5 4.5 0 0 1 8.302-3.046 3.5 3.5 0 0 1 4.504 4.272A4 4 0 0 1 15 17H5.5Zm3.75-2.75a.75.75 0 0 0 1.5 0V9.66l1.95 2.1a.75.75 0 1 0 1.1-1.02l-3.25-3.5a.75.75 0 0 0-1.1 0l-3.25 3.5a.75.75 0 1 0 1.1 1.02l1.95-2.1v4.59Z"
                     clipRule="evenodd"
                   />
                 </svg>
-                <div className="flex flex-col -space-y-0.5">
-                  <span className="text-xs">{stagedFile ? "File selected" : "Add files"}</span>
-                  <span className="text-sm">{stagedFile ? stagedFile.name : "Click or drop"}</span>
-                </div>
               </div>
 
-              <div className="w-px h-8 mx-2 bg-white/10 rounded-full hidden sm:block" />
+              <div className="w-px h-8 mx-2 bg-white/10 rounded-full mt-2" />
 
               <div className="relative">
                 <div
                   onClick={() => setShowLength(!showLength)}
-                  className="flex items-center space-x-4 p-1.5 rounded-xl hover:bg-white/5 duration-300 transition-all cursor-pointer"
-                >
+                  className="flex items-center space-x-4 p-1.5 rounded-xl hover:bg-white/5 duration-300 transition-all cursor-pointer">
                   <div className="flex flex-col -space-y-0.5 pr-2">
                     <span className="text-xs text-stone-300">Response Length</span>
                     <span className="text-sm font-semibold text-white">{responseLength}</span>
@@ -174,11 +173,11 @@ export default function Landing() {
             </div>
           </div>
 
-          <svg className="h-9 w-8 -ml-0.5 -mt-1 min-w-fit" viewBox="0 0 72 72" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <svg className="h-9 w-8 -ml-0.5 -mt-[2px] min-w-fit hidden md:block rotate-3" viewBox="0 0 72 72" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path d="M1 1H71C21.4764 5.44502 6.18653 20.4467 1 71V1Z" fill="#101110" strokeWidth="2" stroke="url(#paint0_linear_1409_7)" />
             <defs>
               <linearGradient id="paint0_linear_1409_7" x1="33" y1="31" x2="1" y2="1" gradientUnits="userSpaceOnUse">
-                <stop stopColor="#1C1917" />
+                <stop stopColor="#0D0B0B" />
                 <stop offset="1" stopColor="#070707" stopOpacity="0" />
               </linearGradient>
             </defs>
