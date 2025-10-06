@@ -27,7 +27,7 @@
     "busboy": "^1.6.0",
     "cors": "^2.8.5",
     "d3-force": "^3.0.0",
-    "docxtemplater": "^3.66.3",
+    "docxtemplater": "^3.66.5",
     "keyv": "^5.5.1",
     "langchain": "^0.3.34",
     "mammoth": "^1.10.0",
