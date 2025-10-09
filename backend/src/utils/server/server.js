@@ -34,7 +34,7 @@ function server() {
     const SERVER = http.createServer((req, res) => {
         let u = parse(req.url, true);
         req.query = u.query || {};
-        req.path = u.pathname.toLowerCase();
+        req.path = u.pathname;
         req.hostname = (req.headers.host || '').split(':')[0].replace(/[^\w.-]/g, '');
         req.ip = (req.socket.remoteAddress || '').replace(/[^\w.:]/g, '');
         res.statusCode = 200;

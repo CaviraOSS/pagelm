@@ -16,7 +16,7 @@ app.use(cors({
   credentials: true,
 }));
 app.options('*', cors());
-app.use(app.serverStatic("/storage", path.join(process.cwd(), "storage")))
+app.use(app.serverStatic("/storage", "./storage"))
 
 registerRoutes(app)
 
