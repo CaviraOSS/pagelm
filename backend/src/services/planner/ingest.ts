@@ -1,7 +1,7 @@
-import { Task } from "./types"
+﻿import { Task } from "./types"
 
 function parseEstMins(s: string): number | null {
-    const m = s.match(/(~|≈)?\s*(\d+(?:\.\d+)?)\s*(h|hr|hrs|hour|hours|m|min|mins|minute|minutes)\b/i)
+    const m = s.match(/(~|)?\s*(\d+(?:\.\d+)?)\s*(h|hr|hrs|hour|hours|m|min|mins|minute|minutes)\b/i)
     if (!m) return null
     const val = parseFloat(m[2])
     const unit = m[3].toLowerCase()
@@ -43,7 +43,8 @@ function parseDue(s: string): number | null {
 export function ingestText(input: string): Omit<Task, "id" | "createdAt" | "updatedAt"> {
     const t = String(input || "").trim()
     const estMins = parseEstMins(t) ?? 60
-    const dueAt = parseDue(t) ?? (Date.now() + 24 * 3600 * 1000)
+    const dueAtMs = parseDue(t) ?? (Date.now() + 24 * 3600 * 1000)
+    const dueAt = new Date(dueAtMs).toISOString()
     const priority: 1 | 2 | 3 | 4 | 5 = 3
     const title = t.replace(/~?\s*\d+(?:\.\d+)?\s*(h|hr|hrs|hour|hours|m|min|mins|minute|minutes)\b/i, "").trim()
     return {

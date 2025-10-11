@@ -102,10 +102,10 @@ export function chatRoutes(app: any) {
             value: "generating",
           });
 
-          let answer: string = "";
+          let answer: any = "";
 
           const msgHistory = await getMsgs(id);
-          const relevantHistory = msgHistory.slice(-20); // Keep last 20 messages for context
+          const relevantHistory = msgHistory.slice(-20);
 
           answer = await handleAsk({
             q,

@@ -293,10 +293,10 @@ export async function podcastStart(payload: { topic: string }) {
 export function connectPodcastStream(pid: string, onEvent: (ev: any) => void) {
   const wsUrl = `${env.backend.replace(/^http/, "ws")}/ws/podcast?pid=${pid}`
   const ws = new WebSocket(wsUrl)
-  
+
   ws.onopen = () => {
   }
-  
+
   ws.onmessage = (e) => {
     try {
       const msg = JSON.parse(e.data)
@@ -305,10 +305,10 @@ export function connectPodcastStream(pid: string, onEvent: (ev: any) => void) {
       onEvent({ type: "error", error: "invalid_message" })
     }
   }
-  
+
   ws.onclose = (e) => {
   }
-  
+
   ws.onerror = () => onEvent({ type: "error", error: "stream_error" } as any)
   return { ws, close: () => { try { ws.close() } catch { } } }
 }
@@ -346,6 +346,7 @@ export type PlannerTask = {
   createdAt: number;
   updatedAt: number;
   tags?: string[];
+  files?: { id: string; filename: string; originalName: string; mimeType: string; size: number; uploadedAt: number }[];
 };
 
 export type PlannerSlot = { id: string; taskId: string; start: number; end: number; kind: "focus" | "review" | "buffer"; done?: boolean }
@@ -357,8 +358,19 @@ export type PlannerEvent =
   | { type: "plan.update"; taskId: string; slots: PlannerSlot[] }
   | { type: "materials.chunk"; id: string; idx: number; total: number; more: boolean; encoding: string; data: string }
   | { type: "materials.done"; id: string; total: number }
-  | { type: "reminder"; text: string; at: number }
-  | { type: "daily.digest"; date: string; due: { id: string; title: string; dueAt: number }[] }
+  | { type: "reminder"; text: string; at: number; taskId?: string; scheduledFor?: string }
+  | { type: "daily.digest"; date: string; due: { id: string; title: string; dueAt: number }[]; sessions: number; message: string }
+  | { type: "evening.review"; date: string; stats: any; tomorrowTasks: { id: string; title: string }[]; message: string }
+  | { type: "break.reminder"; text: string; at: string }
+  | { type: "task.created"; task: PlannerTask }
+  | { type: "task.updated"; task: PlannerTask }
+  | { type: "task.deleted"; taskId: string }
+  | { type: "task.files.added"; taskId: string; files: any[] }
+  | { type: "task.file.removed"; taskId: string; fileId: string }
+  | { type: "session.started"; session: { id: string; taskId: string; slotId?: string; startedAt: string; status: string } }
+  | { type: "session.ended"; session: { id: string; endedAt: string; minutesWorked: number; completed: boolean; status: string } }
+  | { type: "weekly.update"; plan: WeeklyPlan }
+  | { type: "slot.update"; taskId: string; slotId: string; done: boolean; skip: boolean }
   | { type: "done" };
 
 export async function plannerIngest(text: string) {
@@ -425,6 +437,44 @@ export async function plannerUpdate(id: string, patch: Partial<PlannerTask>) {
 
 export async function plannerDelete(id: string) {
   return req<{ ok: boolean }>(`${env.backend}/tasks/${encodeURIComponent(id)}`, { method: "DELETE" })
+}
+
+export async function plannerCreateWithFiles(data: { text?: string; title?: string; course?: string; type?: string; files?: File[] }) {
+  const formData = new FormData()
+  if (data.text) formData.append('q', data.text)
+  if (data.title) formData.append('title', data.title)
+  if (data.course) formData.append('course', data.course)
+  if (data.type) formData.append('type', data.type)
+  if (data.files) {
+    for (const file of data.files) {
+      formData.append('file', file, file.name)
+    }
+  }
+
+  return req<{ ok: boolean; task: PlannerTask & { files?: any[] } }>(`${env.backend}/tasks`, {
+    method: "POST",
+    body: formData,
+    timeout: Math.max(env.timeout, 300000),
+  })
+}
+
+export async function plannerUploadFiles(taskId: string, files: File[]) {
+  const formData = new FormData()
+  for (const file of files) {
+    formData.append('file', file, file.name)
+  }
+
+  return req<{ ok: boolean; files: any[] }>(`${env.backend}/tasks/${encodeURIComponent(taskId)}/files`, {
+    method: "POST",
+    body: formData,
+    timeout: Math.max(env.timeout, 300000),
+  })
+}
+
+export async function plannerDeleteFile(taskId: string, fileId: string) {
+  return req<{ ok: boolean }>(`${env.backend}/tasks/${encodeURIComponent(taskId)}/files/${encodeURIComponent(fileId)}`, {
+    method: "DELETE"
+  })
 }
 
 export function err(e: unknown) {

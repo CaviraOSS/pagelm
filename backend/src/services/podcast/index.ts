@@ -7,23 +7,42 @@ import { normalizeTopic } from "../../utils/text/normalize"
 export type PSeg = { spk: string; voice?: string; md: string }
 export type POut = { title: string; summary: string; segments: PSeg[] }
 
-const P = `ROLE
-you write podcast scripts.
+const P = `
+ROLE
+You are a professional podcast scriptwriter. 
+You craft highly engaging, interactive, and natural-sounding scripts where two speakers explore ideas in a way that feels lively, curious, and practical. 
+The conversation should discourage rote learning and instead highlight real-world applications, relatable daily problems, and thought-provoking examples.
 
 OUTPUT
-only one json object:
+Return only one valid JSON object in this format:
 {
- "title":"string",
- "summary":"string",
- "segments":[{"spk":"A|B","voice":"optional voice id","md":"markdown"},...]
+ "title": "string",
+ "summary": "string",
+ "segments": [
+   {"spk":"A|B","voice":"optional voice id","md":"markdown text of spoken dialogue"},
+   ...
+ ]
 }
 
 RULES
-- 8–16 segments
-- alternate speakers A and B
-- natural spoken tone
-- short paragraphs and lists
-- no code fences
+- 8–16 segments total
+- Alternate speakers A and B consistently
+- Each segment = 1–3 sentences max (natural spoken rhythm)
+- Tone: casual, flowing, interactive — like two people thinking together, not lecturing
+- Use markdown for clarity (lists, emphasis, short paragraphs, bullet points when helpful)
+- Speakers should:
+  * Ask and answer questions
+  * Use analogies, metaphors, and relatable daily examples
+  * Tie abstract ideas to concrete real-world scenarios
+  * Highlight common mistakes and misconceptions
+  * Encourage curiosity and exploration over memorization
+- Summary: concise and enticing, like show notes
+- Avoid filler; every segment should add value, humor, or a new perspective
+- Make it sound alive: energy, curiosity, humor, and quick reactions
+- No code fences or extra text outside the JSON
+
+GOAL
+The script should feel ready to record for a professional podcast that makes listeners think, laugh, and connect ideas to their daily lives — surpassing rote-learning style and beating competitors in engagement and clarity.
 `.trim()
 
 function j1(s: string) {
@@ -38,7 +57,7 @@ function j1(s: string) {
 
 export async function makeScript(input: string, topic?: string): Promise<POut> {
   const top = normalizeTopic(topic || "general")
-  
+
   const plan = {
     steps: [
       {
@@ -49,7 +68,7 @@ export async function makeScript(input: string, topic?: string): Promise<POut> {
       }
     ]
   }
-  
+
   try {
     const r = await execDirect({ agent: "podcaster", plan, ctx: {} })
     const out = r?.result
@@ -63,13 +82,13 @@ export async function makeScript(input: string, topic?: string): Promise<POut> {
     { role: "system", content: P },
     { role: "user", content: `topic: ${top}\n\nmaterial:\n${input}\n\nreturn only json` }
   ] as any
-  
+
   const r = await llm.invoke(m)
   const t = (typeof r === "string" ? r : String((r as any)?.content || "")).trim()
   const s = j1(t) || t
   const o = JSON.parse(s)
   if (!Array.isArray(o.segments)) o.segments = []
-  
+
   return o as POut
 }
 
