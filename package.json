@@ -18,7 +18,7 @@
     "@keyv/sqlite": "^4.0.5",
     "@langchain/anthropic": "^0.3.28",
     "@langchain/community": "^0.3.56",
-    "@langchain/core": "^0.3.77",
+    "@langchain/core": "^0.3.78",
     "@langchain/google-genai": "^0.2.18",
     "@langchain/langgraph": "^0.4.9",
     "@langchain/ollama": "^0.2.4",
