@@ -347,6 +347,7 @@ export type PlannerTask = {
   updatedAt: number;
   tags?: string[];
   files?: { id: string; filename: string; originalName: string; mimeType: string; size: number; uploadedAt: number }[];
+  steps?: string[];
 };
 
 export type PlannerSlot = { id: string; taskId: string; start: number; end: number; kind: "focus" | "review" | "buffer"; done?: boolean }

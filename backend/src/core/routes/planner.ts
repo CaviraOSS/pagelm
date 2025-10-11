@@ -75,6 +75,24 @@ export function plannerRoutes(app: any) {
         }
     })
 
+    app.post("/tasks/:id/plan", async (req: any, res: any) => {
+        try {
+            console.log('Planning task:', req.params.id)
+            const task = await plannerService.planSingleTask(req.params.id)
+            if (!task) {
+                console.log('Task not found:', req.params.id)
+                return res.status(404).send({ ok: false, error: "Task not found" })
+            }
+
+            console.log('Task planned successfully:', task.id, 'Steps:', task.steps?.length)
+            res.send({ ok: true, task })
+            emitToAll(rooms.get("default"), { type: "plan.update", taskId: task.id, slots: task.plan?.slots || [] })
+        } catch (e: any) {
+            console.error('Plan task error:', e)
+            res.status(500).send({ ok: false, error: e?.message || "failed" })
+        }
+    })
+
     app.post("/planner/weekly", async (req: any, res: any) => {
         try {
             const request: PlannerGenerateRequest = req.body
