@@ -478,6 +478,93 @@ export async function plannerDeleteFile(taskId: string, fileId: string) {
   })
 }
 
+export type DebateStartResponse = {
+  ok: boolean;
+  debateId: string;
+  session: {
+    id: string;
+    topic: string;
+    position: "for" | "against";
+    createdAt: number;
+  };
+  stream: string;
+  error?: string;
+}
+
+export type DebateSession = {
+  id: string;
+  topic: string;
+  position: "for" | "against";
+  messages: Array<{
+    role: "user" | "assistant";
+    content: string;
+    timestamp: number;
+  }>;
+  createdAt: number;
+}
+
+export async function startDebate(topic: string, position: "for" | "against") {
+  return req<DebateStartResponse>(`${env.backend}/debate/start`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ topic, position }),
+    timeout: 30000,
+  })
+}
+
+export async function submitDebateArgument(debateId: string, argument: string) {
+  return req<{ ok: boolean; message: string; error?: string }>(`${env.backend}/debate/${encodeURIComponent(debateId)}/argue`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ argument }),
+    timeout: 120000,
+  })
+}
+
+export async function getDebateSession(debateId: string) {
+  return req<{ ok: boolean; session: DebateSession; error?: string }>(`${env.backend}/debate/${encodeURIComponent(debateId)}`, {
+    method: "GET",
+  })
+}
+
+export async function listDebates() {
+  return req<{ ok: boolean; debates: Array<any>; error?: string }>(`${env.backend}/debates`, {
+    method: "GET",
+  })
+}
+
+export async function deleteDebate(debateId: string) {
+  return req<{ ok: boolean; message: string; error?: string }>(`${env.backend}/debate/${encodeURIComponent(debateId)}`, {
+    method: "DELETE",
+  })
+}
+
+export async function surrenderDebate(debateId: string) {
+  return req<{ ok: boolean; message: string; error?: string }>(`${env.backend}/debate/${encodeURIComponent(debateId)}/surrender`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+  })
+}
+
+export type DebateAnalysis = {
+  winner: "user" | "ai" | "draw";
+  reason: string;
+  userStrengths: string[];
+  aiStrengths: string[];
+  userWeaknesses: string[];
+  aiWeaknesses: string[];
+  keyMoments: string[];
+  overallAssessment: string;
+}
+
+export async function analyzeDebate(debateId: string) {
+  return req<{ ok: boolean; analysis: DebateAnalysis; session: DebateSession; error?: string }>(`${env.backend}/debate/${encodeURIComponent(debateId)}/analyze`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    timeout: 60000,
+  })
+}
+
 export function err(e: unknown) {
   return e instanceof Error ? e.message : String(e);
 }

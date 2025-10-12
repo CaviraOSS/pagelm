@@ -6,6 +6,7 @@ import { podcastRoutes } from "./routes/podcast";
 import { examRoutes } from "./routes/examlab";
 import { transcriberRoutes } from "./routes/transcriber";
 import { plannerRoutes } from "./routes/planner";
+import { debateRoutes } from "./routes/debate";
 
 export function registerRoutes(app: any) {
   chatRoutes(app);
@@ -16,4 +17,5 @@ export function registerRoutes(app: any) {
   smartnotesRoutes(app);
   transcriberRoutes(app);
   plannerRoutes(app);
+  debateRoutes(app);
 }

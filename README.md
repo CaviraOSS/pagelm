@@ -52,6 +52,7 @@ The platform provides a modern interface for students, educators, and researcher
 - **Voice Transcribe** - Convert lecture recordings and voice notes into organized, searchable study materials instantly.
 - **Homework Planner** - Plans your Homework Smartly using AI, Assists if your stuck.
 - **ExamLab** - Simulate any exam, get feedback, and be prepared for the exam
+- **Debate** - Debate with AI to improve your Debate skills.
 
 ### Supported AI Models
 
