@@ -204,40 +204,6 @@ export async function* streamDebateAnalysis(sessionId: string): AsyncGenerator<
     const userMessages = session.messages.filter(m => m.role === "user").map(m => m.content);
     const aiMessages = session.messages.filter(m => m.role === "assistant").map(m => m.content);
 
-    if (session.winner && (session.status === "user_surrendered" || session.status === "ai_conceded")) {
-        yield { type: "phase", value: "Generating results..." };
-
-        const quickAnalysis: DebateAnalysis = {
-            winner: session.winner,
-            reason: session.status === "user_surrendered"
-                ? "User surrendered the debate"
-                : "AI conceded due to lack of strong counterarguments",
-            userStrengths: userMessages.length > 0
-                ? ["Presented compelling arguments", "Maintained consistent position"]
-                : ["Engaged in debate"],
-            aiStrengths: aiMessages.length > 0
-                ? ["Provided counterarguments", "Engaged intellectually"]
-                : ["Participated in debate"],
-            userWeaknesses: session.status === "user_surrendered"
-                ? ["Chose to surrender"]
-                : [],
-            aiWeaknesses: session.status === "ai_conceded"
-                ? ["Unable to counter user's arguments effectively"]
-                : [],
-            keyMoments: [
-                session.status === "user_surrendered"
-                    ? "User decided to surrender"
-                    : "AI recognized the strength of opponent's position and conceded"
-            ],
-            overallAssessment: session.status === "user_surrendered"
-                ? "The debate ended with the user's surrender. While the AI presented counterarguments, the user chose to concede the debate."
-                : "The debate ended with the AI conceding. The user presented strong arguments that the AI could not effectively counter, demonstrating the strength of the user's position."
-        };
-
-        yield { type: "analysis", data: quickAnalysis };
-        return;
-    }
-
     yield { type: "phase", value: "Analyzing arguments..." };
 
     const analysisPrompt = `You are an expert debate judge analyzing a completed debate on the topic: "${session.topic}"
@@ -245,6 +211,7 @@ export async function* streamDebateAnalysis(sessionId: string): AsyncGenerator<
 User's position: ${session.position.toUpperCase()}
 AI's position: ${session.position === "for" ? "AGAINST" : "FOR"}
 
+${session.status === "user_surrendered" ? "NOTE: The user surrendered this debate.\n" : ""}${session.status === "ai_conceded" ? "NOTE: The AI conceded this debate due to lack of strong counterarguments.\n" : ""}
 User's arguments:
 ${userMessages.map((msg, i) => `${i + 1}. ${msg}`).join("\n\n")}
 
@@ -320,37 +287,6 @@ export async function analyzeDebate(sessionId: string): Promise<DebateAnalysis> 
     const userMessages = session.messages.filter(m => m.role === "user").map(m => m.content);
     const aiMessages = session.messages.filter(m => m.role === "assistant").map(m => m.content);
 
-    if (session.winner && (session.status === "user_surrendered" || session.status === "ai_conceded")) {
-        const quickAnalysis: DebateAnalysis = {
-            winner: session.winner,
-            reason: session.status === "user_surrendered"
-                ? "User surrendered the debate"
-                : "AI conceded due to lack of strong counterarguments",
-            userStrengths: userMessages.length > 0
-                ? ["Presented compelling arguments", "Maintained consistent position"]
-                : ["Engaged in debate"],
-            aiStrengths: aiMessages.length > 0
-                ? ["Provided counterarguments", "Engaged intellectually"]
-                : ["Participated in debate"],
-            userWeaknesses: session.status === "user_surrendered"
-                ? ["Chose to surrender"]
-                : [],
-            aiWeaknesses: session.status === "ai_conceded"
-                ? ["Unable to counter user's arguments effectively"]
-                : [],
-            keyMoments: [
-                session.status === "user_surrendered"
-                    ? "User decided to surrender"
-                    : "AI recognized the strength of opponent's position and conceded"
-            ],
-            overallAssessment: session.status === "user_surrendered"
-                ? "The debate ended with the user's surrender. While the AI presented counterarguments, the user chose to concede the debate."
-                : "The debate ended with the AI conceding. The user presented strong arguments that the AI could not effectively counter, demonstrating the strength of the user's position."
-        };
-
-        return quickAnalysis;
-    }
-
     console.log("[Debate Analysis] Starting analysis for session:", sessionId);
 
     const analysisPrompt = `You are an expert debate judge analyzing a completed debate on the topic: "${session.topic}"
@@ -358,6 +294,7 @@ export async function analyzeDebate(sessionId: string): Promise<DebateAnalysis> 
 User's position: ${session.position.toUpperCase()}
 AI's position: ${session.position === "for" ? "AGAINST" : "FOR"}
 
+${session.status === "user_surrendered" ? "NOTE: The user surrendered this debate.\n" : ""}${session.status === "ai_conceded" ? "NOTE: The AI conceded this debate due to lack of strong counterarguments.\n" : ""}
 User's arguments:
 ${userMessages.map((msg, i) => `${i + 1}. ${msg}`).join("\n\n")}
 

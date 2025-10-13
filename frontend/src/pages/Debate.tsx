@@ -357,7 +357,7 @@ export default function Debate() {
                                 type="text"
                                 value={topic}
                                 onChange={(e) => setTopic(e.target.value)}
-                                placeholder="e.g., AI in education does more good then bad"
+                                placeholder="e.g., boons and banes of AI in education"
                                 className="w-full px-4 py-3 bg-stone-900/70 border border-zinc-800 rounded-xl text-white placeholder-stone-500 focus:outline-none focus:ring-2 focus:ring-sky-500 focus:border-transparent"
                                 onKeyDown={(e) => e.key === "Enter" && startDebate()}
                             />
