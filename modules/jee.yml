@@ -7,7 +7,7 @@ sections:
     durationSec: 3600
     gen:
       type: "mcq"
-      count: 25
+      count: 5
       difficulty: "hard"
       style: "IIT-JEE conceptual + numeric"
       topic: "mechanics, waves, electricity"
@@ -18,7 +18,7 @@ sections:
     durationSec: 3600
     gen:
       type: "mcq"
-      count: 25
+      count: 5
       difficulty: "hard"
       style: "calculus, algebra, coordinate geometry"
       topic: "senior secondary mathematics"
@@ -29,7 +29,7 @@ sections:
     durationSec: 3600
     gen:
       type: "mcq"
-      count: 25
+      count: 5
       difficulty: "hard"
       style: "physical, organic, inorganic"
       topic: "senior secondary chemistry"

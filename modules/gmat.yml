@@ -7,7 +7,7 @@ sections:
     durationSec: 2100
     gen:
       type: "mcq"
-      count: 18
+      count: 5
       difficulty: "medium-hard"
       style: "data sufficiency and problem solving"
       topic: "GMAT quant skills"
@@ -18,7 +18,7 @@ sections:
     durationSec: 2100
     gen:
       type: "mcq"
-      count: 18
+      count: 5
       difficulty: "medium"
       style: "critical reasoning, reading comp, clarity"
       topic: "business and academic English"

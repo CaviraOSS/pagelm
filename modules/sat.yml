@@ -7,7 +7,7 @@ sections:
     durationSec: 3000
     gen:
       type: "mcq"
-      count: 20
+      count: 5
       difficulty: "medium"
       style: "SAT reading and grammar"
       topic: "general academic prose"
@@ -18,7 +18,7 @@ sections:
     durationSec: 3600
     gen:
       type: "mcq"
-      count: 20
+      count: 5
       difficulty: "medium-hard"
       style: "algebra, functions, linear/quadratic, word problems"
       topic: "high school math"

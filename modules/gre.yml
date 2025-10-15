@@ -7,7 +7,7 @@ sections:
     durationSec: 1800
     gen:
       type: "mcq"
-      count: 15
+      count: 5
       difficulty: "medium"
       style: "text completion, sentence equivalence, reading"
       topic: "general academic English"
@@ -18,7 +18,7 @@ sections:
     durationSec: 2100
     gen:
       type: "mcq"
-      count: 15
+      count: 5
       difficulty: "medium"
       style: "arithmetic, algebra, data analysis, geometry"
       topic: "standard GRE quant"

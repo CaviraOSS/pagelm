@@ -7,7 +7,7 @@ sections:
     durationSec: 1800
     gen:
       type: "short"
-      count: 10
+      count: 5
       difficulty: "medium"
       style: "note completion, short dialogue"
       topic: "campus and general topics"
@@ -20,7 +20,7 @@ sections:
     durationSec: 3600
     gen:
       type: "mcq"
-      count: 10
+      count: 5
       difficulty: "medium"
       style: "academic passages, inference"
       topic: "general academic texts"

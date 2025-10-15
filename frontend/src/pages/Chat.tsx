@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
 import { env } from "../config/env";
-import { chatJSON, getChatDetail, type FlashCard, createFlashcard, listFlashcards, deleteFlashcard, getChats, type ChatMessage, type SavedFlashcard } from "../lib/api";
+import { chatJSON, getChatDetail, type FlashCard, createFlashcard, listFlashcards, deleteFlashcard, getChats, type ChatMessage, type SavedFlashcard, podcastStart } from "../lib/api";
 import MarkdownView from "../components/Chat/MarkdownView";
 import ActionRow from "../components/Chat/ActionRow";
 import FlashCards from "../components/Chat/FlashCards";
@@ -315,6 +315,15 @@ export default function Chat() {
                 onStartQuiz={() => {
                   const t = topic || deriveTopicFromMarkdown(latestAssistantContent) || "General";
                   navigate(`/quiz?topic=${encodeURIComponent(t)}`, { state: { topic: t } });
+                }}
+                onCreatePodcast={async () => {
+                  try {
+                    const topicContent = latestAssistantContent || topic || "Generated from chat";
+                    const response = await podcastStart({ topic: topicContent });
+                    navigate("/tools", { state: { podcastPid: response.pid, podcastTopic: topicContent } });
+                  } catch (error) {
+                    console.error("Failed to create podcast:", error);
+                  }
                 }}
               />
             )}
