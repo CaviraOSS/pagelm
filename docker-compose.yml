@@ -6,7 +6,7 @@ services:
       context: .
       dockerfile: backend/Dockerfile
       target: runtime
-  container_name: pagelm-backend
+    container_name: pagelm-backend
     env_file:
       - ./.env
     environment:
@@ -25,7 +25,7 @@ services:
       args:
         VITE_BACKEND_URL: http://localhost:5000
         VITE_TIMEOUT: 90000
-  container_name: pagelm-frontend
+    container_name: pagelm-frontend
     depends_on:
       - backend
     ports:
