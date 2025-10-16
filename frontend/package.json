@@ -20,7 +20,8 @@
     "rehype-katex": "^7.0.1",
     "remark-breaks": "^4.0.0",
     "remark-gfm": "^4.0.1",
-    "remark-math": "^6.0.0"
+    "remark-math": "^6.0.0",
+    "d3-force": "^3.0.0"
   },
   "devDependencies": {
     "@eslint/js": "^9.30.1",
