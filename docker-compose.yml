@@ -14,6 +14,7 @@ services:
       PORT: 5000
     volumes:
       - ./storage:/app/storage
+      - ./.env:/app/.env:ro
     ports:
       - "5000:5000"
 
